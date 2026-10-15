@@ -5,6 +5,7 @@ import json
 import time
 from dataclasses import dataclass, field
 from pathlib import Path
+from typing import Callable
 
 from . import entail
 from .evidence import Calc, build_registry, data_gaps, detect_conflicts, parse_claims, run_calculations
@@ -66,11 +67,18 @@ def _strip_fence(t: str) -> str:
 
 
 def run(mode: str, ticker: str, legal_name: str, directory: str, llm: LLM, today: str = "2026-09-23",
-        system_prompt: str | None = None, use_entailment: bool = True) -> Result:
+        system_prompt: str | None = None, use_entailment: bool = True,
+        progress: Callable[[str], None] | None = None) -> Result:
     if mode not in MODES:
         raise ValueError(f"mode must be one of {MODES}")
     t0 = time.time()
+
+    def say(msg: str) -> None:
+        if progress:
+            progress(f"[{time.time() - t0:5.1f}s] {msg}")
+
     docs, diags = load_documents(directory)
+    say(f"[1/6] Read {len(docs)} documents from {directory}")
     by_id = {d.doc_id: d for d in docs}
     raw_lines = {d.doc_id: d.lines for d in docs}
     system = Path(system_prompt).read_text(encoding="utf-8") if system_prompt else prompt("system")
@@ -85,6 +93,10 @@ def run(mode: str, ticker: str, legal_name: str, directory: str, llm: LLM, today
         for d in docs:
             assess_identity(d, ticker, legal_name)
         lines_by_doc = {d.doc_id: sanitize(d) for d in docs}
+        for d in docs:
+            status = "relevant" if d.relevant else "EXCLUDED (different company)"
+            flag = "  | instruction-like text redacted" if d.injection_flags else ""
+            say(f"      {d.doc_id} {d.filename:<32} {d.published}  {status}{flag}")
         for d in docs:
             if d.injection_flags:
                 diags.append(f"INJECTION {d.doc_id} ({d.filename}): {d.injection_flags}")
@@ -102,9 +114,11 @@ def run(mode: str, ticker: str, legal_name: str, directory: str, llm: LLM, today
         res.validation = validate_brief(res.brief, [], [], by_id, [], lines_by_doc, excluded, markers)
     else:
         user = prompt("extract").format(ticker=ticker, legal_name=legal_name) + "\n\n" + wrap_docs(docs, lines_by_doc, allowed)
+        say("[2/6] Extracting claims with verbatim quotes (LLM call 1) ...")
         res.raw_extraction = call(system, user)
         claims, d1 = parse_claims(res.raw_extraction)
         res.evidence, d2 = build_registry(claims, by_id, lines_by_doc, allowed)
+        say(f"      {len(claims)} claims proposed; {len(res.evidence)} verified verbatim against the source text, {len(claims) - len(res.evidence)} rejected")
         res.diagnostics += d1 + d2
         if len(res.evidence) < MIN_EVIDENCE:
             raise PipelineError(f"extraction produced only {len(res.evidence)} verified evidence items (minimum {MIN_EVIDENCE}); "
@@ -126,6 +140,9 @@ def run(mode: str, ticker: str, legal_name: str, directory: str, llm: LLM, today
             gap.calc_id = f"C{len(res.calcs) + 1}"
             res.calcs.append(gap)
         res.conflicts = detect_conflicts(res.evidence, res.calcs, by_id)
+        say(f"[3/6] Python calculations: {len(res.calcs)}; conflicts between sources: {len(res.conflicts)}")
+        for c in res.conflicts:
+            say(f"      ! {c.kind}: {c.metric} = {' vs '.join(f'{v:g}' for v in c.values)}")
         extra = ""
         if robust:
             extra = ("Documents flagged: " + "; ".join(f"{d.doc_id}: {d.injection_flags}" for d in docs if d.injection_flags)
@@ -141,16 +158,22 @@ def run(mode: str, ticker: str, legal_name: str, directory: str, llm: LLM, today
         }, indent=1, ensure_ascii=False)
         synth = prompt("synthesize").format(ticker=ticker, legal_name=legal_name, today=today, extra=extra)
         suser = synth + "\n\n<registry>\n" + context.replace("</registry", "<\\/registry") + "\n</registry>"
+        say("[4/6] Writing the brief from the evidence registry (LLM call 2) ...")
         res.brief = _strip_fence(call(system, suser))
         res.validation = validate_brief(res.brief, res.evidence, res.calcs, by_id, res.conflicts, lines_by_doc, excluded, markers)
+        say(f"[5/6] Validating citations, numbers and conflict disclosure: {sum(i.severity == 'error' for i in res.validation.issues)} error(s)")
         if robust:
             def judge_now():
                 if not use_entailment:
                     return [], {}, []
                 return entail.judge(call, system, prompt("entail"), res.brief, res.evidence, res.calcs)
 
+            if use_entailment:
+                say("[6/6] Advisory check that each cited quote supports its sentence (LLM call 3) ...")
             verdicts, index, d3 = judge_now()
             res.diagnostics += d3
+            if verdicts:
+                say("      " + ", ".join(f"{n} {k}" for k in ("supported", "partial", "unsupported") if (n := sum(v.verdict == k for v in verdicts))))
             for _ in range(MAX_REPAIRS):
                 bad = [v for v in verdicts if v.verdict == "unsupported"]
                 weak = [v for v in verdicts if v.verdict == "partial"]
@@ -161,6 +184,7 @@ def run(mode: str, ticker: str, legal_name: str, directory: str, llm: LLM, today
                 issues += "".join(f"\n- entailment (advisory judge, minor): {index[v.id][:100]!r} only PARTLY supported: {v.reason}" for v in weak if v.id in index)
                 res.brief = _strip_fence(call(system, prompt("repair").format(issues=issues) + "\n\nPrevious brief:\n" + res.brief + "\n\n<registry>\n" + context + "\n</registry>"))
                 res.repairs += 1
+                say(f"      repair pass {res.repairs}: fixing the problems found above ...")
                 res.repaired = True
                 res.validation = validate_brief(res.brief, res.evidence, res.calcs, by_id, res.conflicts, lines_by_doc, excluded, markers)
                 verdicts, index, d4 = judge_now() if res.validation.ok or res.repairs == MAX_REPAIRS else ([], {}, [])

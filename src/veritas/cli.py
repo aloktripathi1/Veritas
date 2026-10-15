@@ -19,12 +19,14 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--company", default="Sarvottam Cables Ltd", help="exact legal name used for identity checks")
     ap.add_argument("--today", default="2026-09-23")
     ap.add_argument("--system-prompt", help="override prompts/system.md (used for ablations only)")
+    ap.add_argument("--quiet", action="store_true", help="do not print progress while running")
     ap.add_argument("--no-entailment", action="store_true", help="skip the advisory LLM citation-support check")
     ap.add_argument("--out", default="output.md")
     ap.add_argument("--artifacts", help="directory for evidence.json / run.json")
     a = ap.parse_args(argv)
     try:
-        res = run(a.mode, a.ticker, a.company, a.docs_dir, make_llm(), a.today, a.system_prompt, not a.no_entailment)
+        res = run(a.mode, a.ticker, a.company, a.docs_dir, make_llm(), a.today, a.system_prompt, not a.no_entailment,
+                  None if a.quiet else (lambda m: print(m, flush=True)))
     except (LoadError, LLMError, PipelineError) as e:
         print(f"ERROR: {e}", file=sys.stderr)
         return 2

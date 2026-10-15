@@ -88,3 +88,12 @@ def test_cli_missing_directory_returns_clean_error(tmp_path, capsys, monkeypatch
     monkeypatch.setenv("SRV_PROVIDER", "claude-cli")
     assert main(["SRVCABLE", str(tmp_path / "missing"), "--out", str(tmp_path / "o.md")]) == 2
     assert "not found" in capsys.readouterr().err
+
+
+def test_progress_messages_report_real_events(pack):
+    msgs: list[str] = []
+    res = run("robust", "SRVCABLE", "Sarvottam Cables Ltd", pack, ScriptedLLM([EXTRACTION, GOOD]), use_entailment=False, progress=msgs.append)
+    text = "\n".join(msgs)
+    assert "Read 8 documents" in text and "EXCLUDED (different company)" in text and "instruction-like text redacted" in text
+    assert f"{len(res.evidence) - 1} verified verbatim" in text or "verified verbatim" in text
+    assert "conflicts between sources: 2" in text and "numeric_conflict: revenue = 1248 vs 1428" in text
