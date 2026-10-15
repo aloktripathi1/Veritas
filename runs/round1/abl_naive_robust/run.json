@@ -1,0 +1,25 @@
+{
+ "mode": "robust",
+ "diagnostics": [
+  "Loaded 8 document(s) of 8 file(s) in research_pack",
+  "INJECTION D5 (multibaggeralerts_2026-08-12.md): ['embedded instruction in HTML comment (247 chars)']",
+  "EXCLUDED D6 (nagpurcitytimes_2026-08-20.md): no ticker or exact legal name; similar names only: ['Sarvottam Cable Network', 'Sarvottam Cable penalised']",
+  "dropped claim: value -170.0 not present in its quote (D3)"
+ ],
+ "llm_calls": 2,
+ "seconds": 68.8,
+ "repaired": false,
+ "metrics": {
+  "sections_complete": true,
+  "body_words": 533,
+  "citations_total": 59,
+  "citations_valid": 59,
+  "claim_lines": 16,
+  "claim_lines_cited": 16,
+  "numbers_checked": 47,
+  "numbers_supported": 47,
+  "conflicts_required": 5,
+  "conflicts_disclosed": 5
+ },
+ "issues": []
+}

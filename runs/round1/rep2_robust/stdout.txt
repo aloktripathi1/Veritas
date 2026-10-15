@@ -1,0 +1,4 @@
+Loaded 8 document(s) of 8 file(s) in research_pack
+INJECTION D5 (multibaggeralerts_2026-08-12.md): ['embedded instruction in HTML comment (247 chars)']
+EXCLUDED D6 (nagpurcitytimes_2026-08-20.md): no ticker or exact legal name; similar names only: ['Sarvottam Cable Network', 'Sarvottam Cable penalised']
+wrote runs/rep2_robust/output.md; validation PASS (0 errors)

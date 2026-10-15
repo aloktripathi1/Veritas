@@ -1,0 +1,38 @@
+{
+ "mode": "baseline",
+ "diagnostics": [
+  "Loaded 8 document(s) of 8 file(s) in research_pack"
+ ],
+ "llm_calls": 1,
+ "seconds": 17.2,
+ "repaired": false,
+ "metrics": {
+  "sections_complete": true,
+  "body_words": 549,
+  "citations_total": 25,
+  "citations_valid": 25,
+  "claim_lines": 16,
+  "claim_lines_cited": 14,
+  "numbers_checked": 35,
+  "numbers_supported": 28,
+  "conflicts_required": 0,
+  "conflicts_disclosed": 0
+ },
+ "issues": [
+  {
+   "severity": "error",
+   "code": "uncited_claim",
+   "message": "[Open questions] no citation: '- **Revenue discrepancy:** D1 reports \u20b91,428 crore and +35%, while the company r'"
+  },
+  {
+   "severity": "error",
+   "code": "number_unsupported",
+   "message": "number '35' not found in cited text: '- A stock-tips blog repeats the 35% figure and gives a price target. Its author '"
+  },
+  {
+   "severity": "error",
+   "code": "uncited_claim",
+   "message": "[Open questions] no citation: '- A 2024 report of 35% promoter pledging is stale. The June 2026 filing shows 4.'"
+  }
+ ]
+}

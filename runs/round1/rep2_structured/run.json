@@ -1,0 +1,28 @@
+{
+ "mode": "structured",
+ "diagnostics": [
+  "Loaded 8 document(s) of 8 file(s) in research_pack"
+ ],
+ "llm_calls": 2,
+ "seconds": 72.2,
+ "repaired": false,
+ "metrics": {
+  "sections_complete": true,
+  "body_words": 575,
+  "citations_total": 57,
+  "citations_valid": 57,
+  "claim_lines": 17,
+  "claim_lines_cited": 17,
+  "numbers_checked": 46,
+  "numbers_supported": 46,
+  "conflicts_required": 5,
+  "conflicts_disclosed": 5
+ },
+ "issues": [
+  {
+   "severity": "error",
+   "code": "too_long",
+   "message": "Body is 575 words; limit 560. Cut to at most 480 words: drop the least material bullets and merge minor open questions"
+  }
+ ]
+}

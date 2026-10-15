@@ -1,0 +1,789 @@
+{
+ "evidence": [
+  {
+   "evidence_id": "E01",
+   "doc_id": "D1",
+   "line_start": 12,
+   "line_end": 12,
+   "quote": "Revenue from operations rose to ₹1,428 crore, a 35% increase from the year-ago period",
+   "metric": "revenue",
+   "entity": "Sarvottam Cables Ltd",
+   "value": 1428.0,
+   "unit": "crore INR",
+   "period": "Q1 FY27",
+   "claim_type": "reported_fact",
+   "note": "News figure; conflicts with D3 filing (1,248). Likely error, D3 better supported."
+  },
+  {
+   "evidence_id": "E02",
+   "doc_id": "D1",
+   "line_start": 12,
+   "line_end": 12,
+   "quote": "a 35% increase from the year-ago period",
+   "metric": "revenue_growth_yoy_pct",
+   "entity": "Sarvottam Cables Ltd",
+   "value": 35.0,
+   "unit": "%",
+   "period": "Q1 FY27",
+   "claim_type": "reported_fact",
+   "note": "News; D3 filing says 18.0%. Likely follows the wrong revenue figure."
+  },
+  {
+   "evidence_id": "E03",
+   "doc_id": "D1",
+   "line_start": 12,
+   "line_end": 12,
+   "quote": "Net profit rose about 6% to ₹82 crore.",
+   "metric": "pat",
+   "entity": "Sarvottam Cables Ltd",
+   "value": 82.0,
+   "unit": "crore INR",
+   "period": "Q1 FY27",
+   "claim_type": "reported_fact",
+   "note": "Matches D3 PAT of 82."
+  },
+  {
+   "evidence_id": "E04",
+   "doc_id": "D1",
+   "line_start": 14,
+   "line_end": 14,
+   "quote": "Operating margins, however, contracted by 170 basis points to 11.2%",
+   "metric": "ebitda_margin",
+   "entity": "Sarvottam Cables Ltd",
+   "value": 11.2,
+   "unit": "%",
+   "period": "Q1 FY27",
+   "claim_type": "reported_fact",
+   "note": "Operating margin; matches D3 EBITDA margin; 170 bps fall."
+  },
+  {
+   "evidence_id": "E05",
+   "doc_id": "D1",
+   "line_start": 14,
+   "line_end": 14,
+   "quote": "copper, the company's main raw material, rose nearly 14% during the quarter",
+   "metric": "copper_price_change_pct",
+   "entity": "Copper",
+   "value": 14.0,
+   "unit": "%",
+   "period": "Q1 FY27",
+   "claim_type": "other",
+   "note": "Journalist's approximate figure, 'nearly 14%'; no source given."
+  },
+  {
+   "evidence_id": "E06",
+   "doc_id": "D1",
+   "line_start": 18,
+   "line_end": 18,
+   "quote": "Shares of the company fell 3.2% to ₹1,012 on the NSE on Friday after the results.",
+   "metric": "share_price",
+   "entity": "Sarvottam Cables Ltd",
+   "value": 1012.0,
+   "unit": "INR",
+   "period": "Friday after results (approx. 7-8 Aug 2026)",
+   "claim_type": "reported_fact",
+   "note": "News-reported price; exact date not given; article dated 9 Aug (Sunday)."
+  },
+  {
+   "evidence_id": "E07",
+   "doc_id": "D1",
+   "line_start": 16,
+   "line_end": 16,
+   "quote": "The volume story is intact, but investors will watch whether the company can pass on higher copper costs",
+   "metric": "other",
+   "entity": "Anonymous Mumbai-based analyst",
+   "value": null,
+   "unit": "other",
+   "period": "Q1 FY27",
+   "claim_type": "opinion",
+   "note": "Unnamed analyst; flags copper pass-through risk."
+  },
+  {
+   "evidence_id": "E08",
+   "doc_id": "D2",
+   "line_start": 10,
+   "line_end": 10,
+   "quote": "For the full year FY27 we are maintaining our revenue growth guidance of 15 to 17 percent.",
+   "metric": "revenue_guidance_growth_pct",
+   "entity": "Sarvottam Cables Ltd (MD)",
+   "value": null,
+   "unit": "%",
+   "period": "FY27",
+   "claim_type": "management_statement",
+   "note": "Range 15-17%; forward-looking guidance, not a fact."
+  },
+  {
+   "evidence_id": "E09",
+   "doc_id": "D2",
+   "line_start": 10,
+   "line_end": 10,
+   "quote": "Data-centre cables are now about 9 percent of our domestic revenue",
+   "metric": "data_centre_share_pct",
+   "entity": "Sarvottam Cables Ltd (MD)",
+   "value": 9.0,
+   "unit": "%",
+   "period": "Q1 FY27",
+   "claim_type": "management_statement",
+   "note": "Share of domestic revenue, not total revenue; 'about'."
+  },
+  {
+   "evidence_id": "E10",
+   "doc_id": "D2",
+   "line_start": 10,
+   "line_end": 10,
+   "quote": "we think that can double in two years",
+   "metric": "other",
+   "entity": "Sarvottam Cables Ltd (MD)",
+   "value": null,
+   "unit": "other",
+   "period": "by about FY29",
+   "claim_type": "forecast",
+   "note": "Management expectation that data-centre share doubles; unsupported."
+  },
+  {
+   "evidence_id": "E11",
+   "doc_id": "D2",
+   "line_start": 14,
+   "line_end": 14,
+   "quote": "Mostly copper. About two-thirds of our contracts have price-variation clauses, but they reset with a lag of one to two quarters.",
+   "metric": "other",
+   "entity": "Sarvottam Cables Ltd (MD)",
+   "value": null,
+   "unit": "other",
+   "period": "Q1 FY27",
+   "claim_type": "management_statement",
+   "note": "Margin fall mostly copper; ~2/3 contracts have clauses; 1-2 quarter lag; ~1/3 unprotected."
+  },
+  {
+   "evidence_id": "E12",
+   "doc_id": "D2",
+   "line_start": 18,
+   "line_end": 18,
+   "quote": "receivable days increased from 78 to 96 over the last year",
+   "metric": "receivable_days",
+   "entity": "Sarvottam Cables Ltd (CFO)",
+   "value": 78.0,
+   "unit": "days",
+   "period": "a year before Q1 FY27",
+   "claim_type": "management_statement",
+   "note": "Starting point of increase; exact date not stated."
+  },
+  {
+   "evidence_id": "E13",
+   "doc_id": "D2",
+   "line_start": 18,
+   "line_end": 18,
+   "quote": "receivable days increased from 78 to 96 over the last year",
+   "metric": "receivable_days",
+   "entity": "Sarvottam Cables Ltd (CFO)",
+   "value": 96.0,
+   "unit": "days",
+   "period": "Q1 FY27 (approx.)",
+   "claim_type": "management_statement",
+   "note": "Current level; 18 days longer; working-capital pressure."
+  },
+  {
+   "evidence_id": "E14",
+   "doc_id": "D2",
+   "line_start": 18,
+   "line_end": 18,
+   "quote": "That is mainly two large state utility customers, where payments are slower. We are monitoring this closely and have not seen any defaults.",
+   "metric": "other",
+   "entity": "Sarvottam Cables Ltd (CFO)",
+   "value": null,
+   "unit": "other",
+   "period": "Q1 FY27",
+   "claim_type": "management_statement",
+   "note": "Customer concentration/payment delay; 'no defaults' is management assertion."
+  },
+  {
+   "evidence_id": "E15",
+   "doc_id": "D2",
+   "line_start": 22,
+   "line_end": 22,
+   "quote": "Bharuch capex is ₹620 crore in total",
+   "metric": "capex_total",
+   "entity": "Sarvottam Cables Ltd (CFO)",
+   "value": 620.0,
+   "unit": "crore INR",
+   "period": "Bharuch project, total",
+   "claim_type": "management_statement",
+   "note": "Total project cost, not annual spend."
+  },
+  {
+   "evidence_id": "E16",
+   "doc_id": "D2",
+   "line_start": 22,
+   "line_end": 22,
+   "quote": "about 70 percent already spent",
+   "metric": "capex_pct_spent",
+   "entity": "Sarvottam Cables Ltd (CFO)",
+   "value": 70.0,
+   "unit": "%",
+   "period": "Q1 FY27",
+   "claim_type": "management_statement",
+   "note": "Share of Bharuch capex spent; 'about'."
+  },
+  {
+   "evidence_id": "E17",
+   "doc_id": "D2",
+   "line_start": 22,
+   "line_end": 22,
+   "quote": "It is funded mainly through internal accruals and some term debt.",
+   "metric": "other",
+   "entity": "Sarvottam Cables Ltd (CFO)",
+   "value": null,
+   "unit": "other",
+   "period": "Q1 FY27",
+   "claim_type": "management_statement",
+   "note": "Funding mix of Bharuch capex; no split given."
+  },
+  {
+   "evidence_id": "E18",
+   "doc_id": "D2",
+   "line_start": 22,
+   "line_end": 22,
+   "quote": "Net debt to equity is 0.35 times.",
+   "metric": "net_debt_to_equity",
+   "entity": "Sarvottam Cables Ltd (CFO)",
+   "value": 0.35,
+   "unit": "x",
+   "period": "Q1 FY27 (as stated on call)",
+   "claim_type": "management_statement",
+   "note": "Stated on call; not shown in filing; date not specified."
+  },
+  {
+   "evidence_id": "E19",
+   "doc_id": "D3",
+   "line_start": 16,
+   "line_end": 16,
+   "quote": "| Revenue from operations | 1,248 | 1,058 | +18.0% |",
+   "metric": "revenue",
+   "entity": "Sarvottam Cables Ltd (consolidated)",
+   "value": 1248.0,
+   "unit": "crore INR",
+   "period": "Q1 FY27",
+   "claim_type": "reported_fact",
+   "note": "Company release; preferred over D1's 1,428."
+  },
+  {
+   "evidence_id": "E20",
+   "doc_id": "D3",
+   "line_start": 16,
+   "line_end": 16,
+   "quote": "| Revenue from operations | 1,248 | 1,058 | +18.0% |",
+   "metric": "revenue",
+   "entity": "Sarvottam Cables Ltd (consolidated)",
+   "value": 1058.0,
+   "unit": "crore INR",
+   "period": "Q1 FY26",
+   "claim_type": "reported_fact",
+   "note": "Year-ago comparative."
+  },
+  {
+   "evidence_id": "E21",
+   "doc_id": "D3",
+   "line_start": 16,
+   "line_end": 16,
+   "quote": "| Revenue from operations | 1,248 | 1,058 | +18.0% |",
+   "metric": "revenue_growth_yoy_pct",
+   "entity": "Sarvottam Cables Ltd (consolidated)",
+   "value": 18.0,
+   "unit": "%",
+   "period": "Q1 FY27",
+   "claim_type": "reported_fact",
+   "note": "As stated in release; contradicts D1's 35%."
+  },
+  {
+   "evidence_id": "E22",
+   "doc_id": "D3",
+   "line_start": 17,
+   "line_end": 17,
+   "quote": "| EBITDA | 140 | 136 | +2.6% |",
+   "metric": "ebitda",
+   "entity": "Sarvottam Cables Ltd (consolidated)",
+   "value": 140.0,
+   "unit": "crore INR",
+   "period": "Q1 FY27",
+   "claim_type": "reported_fact",
+   "note": "Growth +2.6% as stated."
+  },
+  {
+   "evidence_id": "E23",
+   "doc_id": "D3",
+   "line_start": 17,
+   "line_end": 17,
+   "quote": "| EBITDA | 140 | 136 | +2.6% |",
+   "metric": "ebitda",
+   "entity": "Sarvottam Cables Ltd (consolidated)",
+   "value": 136.0,
+   "unit": "crore INR",
+   "period": "Q1 FY26",
+   "claim_type": "reported_fact",
+   "note": "Year-ago comparative."
+  },
+  {
+   "evidence_id": "E24",
+   "doc_id": "D3",
+   "line_start": 18,
+   "line_end": 18,
+   "quote": "| EBITDA margin | 11.2% | 12.9% | −170 bps |",
+   "metric": "ebitda_margin",
+   "entity": "Sarvottam Cables Ltd (consolidated)",
+   "value": 11.2,
+   "unit": "%",
+   "period": "Q1 FY27",
+   "claim_type": "reported_fact",
+   "note": "Down 170 bps YoY as stated."
+  },
+  {
+   "evidence_id": "E25",
+   "doc_id": "D3",
+   "line_start": 18,
+   "line_end": 18,
+   "quote": "| EBITDA margin | 11.2% | 12.9% | −170 bps |",
+   "metric": "ebitda_margin",
+   "entity": "Sarvottam Cables Ltd (consolidated)",
+   "value": 12.9,
+   "unit": "%",
+   "period": "Q1 FY26",
+   "claim_type": "reported_fact",
+   "note": "Year-ago comparative."
+  },
+  {
+   "evidence_id": "E26",
+   "doc_id": "D3",
+   "line_start": 19,
+   "line_end": 19,
+   "quote": "| Profit after tax | 82 | 77 | +5.9% |",
+   "metric": "pat",
+   "entity": "Sarvottam Cables Ltd (consolidated)",
+   "value": 82.0,
+   "unit": "crore INR",
+   "period": "Q1 FY27",
+   "claim_type": "reported_fact",
+   "note": "Growth +5.9% as stated."
+  },
+  {
+   "evidence_id": "E27",
+   "doc_id": "D3",
+   "line_start": 19,
+   "line_end": 19,
+   "quote": "| Profit after tax | 82 | 77 | +5.9% |",
+   "metric": "pat",
+   "entity": "Sarvottam Cables Ltd (consolidated)",
+   "value": 77.0,
+   "unit": "crore INR",
+   "period": "Q1 FY26",
+   "claim_type": "reported_fact",
+   "note": "Year-ago comparative."
+  },
+  {
+   "evidence_id": "E28",
+   "doc_id": "D3",
+   "line_start": 21,
+   "line_end": 21,
+   "quote": "Order book stood at ₹3,900 crore as of 30 June 2026",
+   "metric": "order_book",
+   "entity": "Sarvottam Cables Ltd",
+   "value": 3900.0,
+   "unit": "crore INR",
+   "period": "as of 30 Jun 2026",
+   "claim_type": "reported_fact",
+   "note": "Company-reported; order quality not detailed."
+  },
+  {
+   "evidence_id": "E29",
+   "doc_id": "D3",
+   "line_start": 21,
+   "line_end": 21,
+   "quote": "up from ₹3,150 crore a year ago",
+   "metric": "order_book",
+   "entity": "Sarvottam Cables Ltd",
+   "value": 3150.0,
+   "unit": "crore INR",
+   "period": "as of 30 Jun 2025",
+   "claim_type": "reported_fact",
+   "note": "Year-ago comparative."
+  },
+  {
+   "evidence_id": "E30",
+   "doc_id": "D3",
+   "line_start": 22,
+   "line_end": 22,
+   "quote": "Exports contributed 21% of revenue (Q1 FY26: 16%).",
+   "metric": "export_share_pct",
+   "entity": "Sarvottam Cables Ltd",
+   "value": 21.0,
+   "unit": "%",
+   "period": "Q1 FY27",
+   "claim_type": "reported_fact",
+   "note": "Share of revenue."
+  },
+  {
+   "evidence_id": "E31",
+   "doc_id": "D3",
+   "line_start": 22,
+   "line_end": 22,
+   "quote": "Exports contributed 21% of revenue (Q1 FY26: 16%).",
+   "metric": "export_share_pct",
+   "entity": "Sarvottam Cables Ltd",
+   "value": 16.0,
+   "unit": "%",
+   "period": "Q1 FY26",
+   "claim_type": "reported_fact",
+   "note": "Year-ago comparative."
+  },
+  {
+   "evidence_id": "E32",
+   "doc_id": "D3",
+   "line_start": 23,
+   "line_end": 23,
+   "quote": "The new Bharuch (Gujarat) plant, adding about 30% to cable capacity, is on track to begin commercial production in Q3 FY27.",
+   "metric": "other",
+   "entity": "Sarvottam Cables Ltd",
+   "value": 30.0,
+   "unit": "%",
+   "period": "Q3 FY27",
+   "claim_type": "management_statement",
+   "note": "Capacity addition ~30%; timing is a company expectation."
+  },
+  {
+   "evidence_id": "E33",
+   "doc_id": "D3",
+   "line_start": 25,
+   "line_end": 25,
+   "quote": "Margins were affected by a sharp rise in copper prices during the quarter, which we expect to pass on to customers over the next two quarters.",
+   "metric": "other",
+   "entity": "Sarvottam Cables Ltd (MD)",
+   "value": null,
+   "unit": "other",
+   "period": "Q1 FY27",
+   "claim_type": "management_statement",
+   "note": "Pass-through is an expectation, not assured."
+  },
+  {
+   "evidence_id": "E34",
+   "doc_id": "D4",
+   "line_start": 10,
+   "line_end": 10,
+   "quote": "The promoters of Sarvottam Cables Ltd have increased the share of their holding that is pledged with lenders to 35%, up from 22% six months ago",
+   "metric": "promoter_pledge_pct_of_promoter_holding",
+   "entity": "Sarvottam Cables promoters",
+   "value": 35.0,
+   "unit": "%",
+   "period": "as of about Mar 2024",
+   "claim_type": "reported_fact",
+   "note": "Stale 2024 news citing exchange data; superseded by D8's 4.1%."
+  },
+  {
+   "evidence_id": "E35",
+   "doc_id": "D5",
+   "line_start": 8,
+   "line_end": 8,
+   "quote": "STRONG BUY NOW, TARGET ₹1,450 (60% UPSIDE)",
+   "metric": "price_target",
+   "entity": "MultibaggerAlertsIndia (unregistered blog)",
+   "value": 1450.0,
+   "unit": "INR",
+   "period": "Aug 2026",
+   "claim_type": "opinion",
+   "note": "Non-SEBI-registered tip sheet; promotional; no basis shown; not evidence of value."
+  },
+  {
+   "evidence_id": "E36",
+   "doc_id": "D5",
+   "line_start": 10,
+   "line_end": 10,
+   "quote": "Results were FANTASTIC, revenue up 35%!!",
+   "metric": "revenue_growth_yoy_pct",
+   "entity": "MultibaggerAlertsIndia (unregistered blog)",
+   "value": 35.0,
+   "unit": "%",
+   "period": "Q1 FY27",
+   "claim_type": "opinion",
+   "note": "Promotional; repeats 35% that conflicts with filing's 18.0%. Unreliable source."
+  },
+  {
+   "evidence_id": "E37",
+   "doc_id": "D7",
+   "line_start": 10,
+   "line_end": 10,
+   "quote": "raising a demand of ₹46.3 crore (including interest and penalty) relating to input tax credit claimed for FY2020-21 and FY2021-22",
+   "metric": "tax_demand",
+   "entity": "Sarvottam Cables Ltd",
+   "value": 46.3,
+   "unit": "crore INR",
+   "period": "disclosed 2 Sep 2026; relates to FY2020-21, FY2021-22",
+   "claim_type": "reported_fact",
+   "note": "GST demand incl. interest and penalty; CGST Mumbai order; company disputes."
+  },
+  {
+   "evidence_id": "E38",
+   "doc_id": "D7",
+   "line_start": 12,
+   "line_end": 12,
+   "quote": "The Company believes it has a strong case on merits, based on legal advice, and intends to file an appeal before the appropriate authority.",
+   "metric": "other",
+   "entity": "Sarvottam Cables Ltd",
+   "value": null,
+   "unit": "other",
+   "period": "Sep 2026",
+   "claim_type": "management_statement",
+   "note": "Appeal intended, not yet filed; merit claim is company's view."
+  },
+  {
+   "evidence_id": "E39",
+   "doc_id": "D7",
+   "line_start": 12,
+   "line_end": 12,
+   "quote": "The Company does not expect any material impact on its financial position or operations.",
+   "metric": "other",
+   "entity": "Sarvottam Cables Ltd",
+   "value": null,
+   "unit": "other",
+   "period": "Sep 2026",
+   "claim_type": "management_statement",
+   "note": "Company's own assessment; outcome uncertain."
+  },
+  {
+   "evidence_id": "E40",
+   "doc_id": "D8",
+   "line_start": 12,
+   "line_end": 12,
+   "quote": "| Promoters & promoter group | 58.2% | 58.2% | 58.4% |",
+   "metric": "promoter_holding_pct",
+   "entity": "Promoters & promoter group",
+   "value": 58.2,
+   "unit": "%",
+   "period": "as of 30 Jun 2026",
+   "claim_type": "reported_fact",
+   "note": "% of total shares; unchanged from Mar 2026."
+  },
+  {
+   "evidence_id": "E41",
+   "doc_id": "D8",
+   "line_start": 12,
+   "line_end": 12,
+   "quote": "| Promoters & promoter group | 58.2% | 58.2% | 58.4% |",
+   "metric": "promoter_holding_pct",
+   "entity": "Promoters & promoter group",
+   "value": 58.4,
+   "unit": "%",
+   "period": "as of 30 Jun 2025",
+   "claim_type": "reported_fact",
+   "note": "% of total shares; year-ago."
+  },
+  {
+   "evidence_id": "E42",
+   "doc_id": "D8",
+   "line_start": 13,
+   "line_end": 13,
+   "quote": "| Of which pledged (as % of promoter holding) | 4.1% | 6.0% | 11.5% |",
+   "metric": "promoter_pledge_pct_of_promoter_holding",
+   "entity": "Promoters & promoter group",
+   "value": 4.1,
+   "unit": "%",
+   "period": "as of 30 Jun 2026",
+   "claim_type": "reported_fact",
+   "note": "% of promoter holding, not total shares; latest filing."
+  },
+  {
+   "evidence_id": "E43",
+   "doc_id": "D8",
+   "line_start": 13,
+   "line_end": 13,
+   "quote": "| Of which pledged (as % of promoter holding) | 4.1% | 6.0% | 11.5% |",
+   "metric": "promoter_pledge_pct_of_promoter_holding",
+   "entity": "Promoters & promoter group",
+   "value": 6.0,
+   "unit": "%",
+   "period": "as of 31 Mar 2026",
+   "claim_type": "reported_fact",
+   "note": "% of promoter holding; falling trend."
+  },
+  {
+   "evidence_id": "E44",
+   "doc_id": "D8",
+   "line_start": 13,
+   "line_end": 13,
+   "quote": "| Of which pledged (as % of promoter holding) | 4.1% | 6.0% | 11.5% |",
+   "metric": "promoter_pledge_pct_of_promoter_holding",
+   "entity": "Promoters & promoter group",
+   "value": 11.5,
+   "unit": "%",
+   "period": "as of 30 Jun 2025",
+   "claim_type": "reported_fact",
+   "note": "% of promoter holding; year-ago."
+  }
+ ],
+ "calculations": [
+  {
+   "calc_id": "C1",
+   "text": "revenue: 1248 vs 1058 (Q1 FY27 vs Q1 FY26) = +18.0% YoY",
+   "inputs": [
+    "E19",
+    "E20"
+   ]
+  },
+  {
+   "calc_id": "C2",
+   "text": "ebitda: 140 vs 136 (Q1 FY27 vs Q1 FY26) = +2.9% YoY",
+   "inputs": [
+    "E22",
+    "E23"
+   ]
+  },
+  {
+   "calc_id": "C3",
+   "text": "ebitda_margin: 12.9% -> 11.2% (Q1 FY27 vs Q1 FY26) = -170 bps",
+   "inputs": [
+    "E24",
+    "E25"
+   ]
+  },
+  {
+   "calc_id": "C4",
+   "text": "pat: 82 vs 77 (Q1 FY27 vs Q1 FY26) = +6.5% YoY",
+   "inputs": [
+    "E26",
+    "E27"
+   ]
+  },
+  {
+   "calc_id": "C5",
+   "text": "export_share_pct: 16% -> 21% (Q1 FY27 vs Q1 FY26) = +500 bps",
+   "inputs": [
+    "E30",
+    "E31"
+   ]
+  },
+  {
+   "calc_id": "C6",
+   "text": "EBITDA / revenue (Q1 FY27) = 11.2%",
+   "inputs": [
+    "E22",
+    "E19"
+   ]
+  },
+  {
+   "calc_id": "C7",
+   "text": "EBITDA / revenue (Q1 FY26) = 12.9%",
+   "inputs": [
+    "E23",
+    "E20"
+   ]
+  },
+  {
+   "calc_id": "C8",
+   "text": "Pledged shares as % of TOTAL shares (as of 30 Jun 2026) = 4.1% x 58.2% = 2.4% (the 4.1% itself is a share of the promoter holding, not of all shares)",
+   "inputs": [
+    "E42",
+    "E40"
+   ]
+  },
+  {
+   "calc_id": "C9",
+   "text": "Pledged shares as % of TOTAL shares (as of 30 Jun 2025) = 11.5% x 58.4% = 6.7% (the 11.5% itself is a share of the promoter holding, not of all shares)",
+   "inputs": [
+    "E44",
+    "E41"
+   ]
+  },
+  {
+   "calc_id": "C10",
+   "text": "Capex: 70% of 620 crore spent = 434 crore; remaining = 186 crore",
+   "inputs": [
+    "E15",
+    "E16"
+   ]
+  },
+  {
+   "calc_id": "C11",
+   "text": "Tip-sheet target 1450 vs last reported price 1012 implies +43% (the tip sheet itself claims 60%; prices are from different dates)",
+   "inputs": [
+    "E35",
+    "E06"
+   ]
+  }
+ ],
+ "conflicts": [
+  {
+   "metric": "revenue",
+   "period": "Q1 FY27",
+   "evidence_ids": [
+    "E01",
+    "E19"
+   ],
+   "values": [
+    1248.0,
+    1428.0
+   ],
+   "kind": "numeric_conflict",
+   "explanation": "Different sources give different values for the same metric and period; compare source types/dates: [('D1', '2026-08-09', 'news article'), ('D3', '2026-08-08', 'official company filing')]"
+  },
+  {
+   "metric": "revenue_growth_yoy_pct",
+   "period": "Q1 FY27",
+   "evidence_ids": [
+    "E02",
+    "E21",
+    "E36"
+   ],
+   "values": [
+    18.0,
+    35.0
+   ],
+   "kind": "numeric_conflict",
+   "explanation": "Different sources give different values for the same metric and period; compare source types/dates: [('D1', '2026-08-09', 'news article'), ('D3', '2026-08-08', 'official company filing'), ('D5', '2026-08-12', 'blog post')]"
+  },
+  {
+   "metric": "promoter_pledge_pct_of_promoter_holding",
+   "period": "multiple dates",
+   "evidence_ids": [
+    "E34",
+    "E42",
+    "E43",
+    "E44"
+   ],
+   "values": [
+    4.1,
+    6.0,
+    11.5,
+    35.0
+   ],
+   "kind": "stale_vs_new",
+   "explanation": "Same metric reported at different dates: {'D4': '2024-03-18', 'D8': '2026-07-15'}. Older figure is superseded unless shown otherwise."
+  },
+  {
+   "metric": "revenue_growth_yoy_pct",
+   "period": "Q1 FY27",
+   "evidence_ids": [
+    "E02",
+    "E19",
+    "E20"
+   ],
+   "values": [
+    18.0,
+    35.0
+   ],
+   "kind": "numeric_conflict",
+   "explanation": "Reported growth 35% disagrees with growth computed from filing figures (revenue: 1248 vs 1058 (Q1 FY27 vs Q1 FY26) = +18.0% YoY)."
+  },
+  {
+   "metric": "revenue_growth_yoy_pct",
+   "period": "Q1 FY27",
+   "evidence_ids": [
+    "E36",
+    "E19",
+    "E20"
+   ],
+   "values": [
+    18.0,
+    35.0
+   ],
+   "kind": "numeric_conflict",
+   "explanation": "Reported growth 35% disagrees with growth computed from filing figures (revenue: 1248 vs 1058 (Q1 FY27 vs Q1 FY26) = +18.0% YoY)."
+  }
+ ]
+}

@@ -1,0 +1,33 @@
+{
+ "mode": "baseline",
+ "diagnostics": [
+  "Loaded 8 document(s) of 8 file(s) in research_pack"
+ ],
+ "llm_calls": 1,
+ "seconds": 15.8,
+ "repaired": false,
+ "metrics": {
+  "sections_complete": true,
+  "body_words": 530,
+  "citations_total": 29,
+  "citations_valid": 29,
+  "claim_lines": 16,
+  "claim_lines_cited": 16,
+  "numbers_checked": 38,
+  "numbers_supported": 36,
+  "conflicts_required": 0,
+  "conflicts_disclosed": 0
+ },
+ "issues": [
+  {
+   "severity": "error",
+   "code": "number_unsupported",
+   "message": "number '1,428' not found in cited text: '- Why does D1 report \u20b91,428 crore and +35%? Has it been corrected? The tip blog '"
+  },
+  {
+   "severity": "error",
+   "code": "number_unsupported",
+   "message": "number '1,450' not found in cited text: '- The \"strong buy, \u20b91,450 target\" blog is an unregistered tip sheet [D5:L8, L20]'"
+  }
+ ]
+}

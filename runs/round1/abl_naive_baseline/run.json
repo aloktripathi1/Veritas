@@ -1,0 +1,22 @@
+{
+ "mode": "baseline",
+ "diagnostics": [
+  "Loaded 8 document(s) of 8 file(s) in research_pack"
+ ],
+ "llm_calls": 1,
+ "seconds": 17.9,
+ "repaired": false,
+ "metrics": {
+  "sections_complete": true,
+  "body_words": 423,
+  "citations_total": 31,
+  "citations_valid": 31,
+  "claim_lines": 17,
+  "claim_lines_cited": 17,
+  "numbers_checked": 37,
+  "numbers_supported": 37,
+  "conflicts_required": 0,
+  "conflicts_disclosed": 0
+ },
+ "issues": []
+}
