@@ -8,3 +8,4 @@ candidate.zip
 .coverage
 nohup.out
 .ruff_cache/
+runs/demo/

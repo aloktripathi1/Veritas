@@ -36,6 +36,13 @@ PYTHONPATH=src python scripts/adversarial_live.py [naive]   # live paraphrased-i
 python scripts/evaluate.py runs/round2/r5_a runs/round2/r5_b runs/round2/r5_c    # gold-set table
 ```
 
+## Demo
+```bash
+FAST=1 bash scripts/demo.sh   # about 2 minutes: live run with streamed progress, brief, conflicts, injection handling, tests
+bash scripts/demo.sh           # same, with the advisory support check (2.5-4 minutes depending on repairs)
+```
+Writes to `runs/demo/` (git-ignored) and never touches `output.md`. `--quiet` turns off the progress output of the CLI itself.
+
 ## Troubleshooting
 - `ANTHROPIC_API_KEY is not set`: fill `.env` or use `SRV_PROVIDER=claude-cli`.
 - `validation FAIL`: read `issues` in `run.json`; the brief is still written so you can inspect it.
