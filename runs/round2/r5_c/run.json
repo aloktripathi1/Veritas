@@ -1,0 +1,215 @@
+{
+ "mode": "robust",
+ "diagnostics": [
+  "Loaded 8 document(s) of 8 file(s) in research_pack",
+  "INJECTION D5 (multibaggeralerts_2026-08-12.md): ['embedded instruction in HTML comment (247 chars)']",
+  "EXCLUDED D6 (nagpurcitytimes_2026-08-20.md): no ticker or legal name; similar names only: ['Sarvottam Cable Network', 'Sarvottam Cable penalised']"
+ ],
+ "llm_calls": 3,
+ "seconds": 98.5,
+ "repaired": false,
+ "repairs": 0,
+ "usage": {
+  "input_tokens": 24811,
+  "output_tokens": 16254,
+  "calls": 3
+ },
+ "entailment": [
+  {
+   "sentence": "Sarvottam Cables makes cables, and copper is its main raw material [E06].",
+   "id": 1,
+   "verdict": "partial",
+   "reason": "E06 supports copper as main raw material; the cited text does not say the company makes cables."
+  },
+  {
+   "sentence": "Q1 FY27 revenue was \u20b91,248 crore, up 18.0% on a year earlier [E23][E25].",
+   "id": 2,
+   "verdict": "supported",
+   "reason": "Table row gives 1,248 vs 1,058 and +18.0%."
+  },
+  {
+   "sentence": "Profit after tax was \u20b982 crore, up 5.9% [E30].",
+   "id": 3,
+   "verdict": "supported",
+   "reason": "Table row shows PAT 82 vs 77, +5.9%."
+  },
+  {
+   "sentence": "Operating margin (EBITDA, profit before interest, tax and depreciation, as a share of revenue) fell 170 bps (1.7 percentage points) to 11.2% [E28].",
+   "id": 4,
+   "verdict": "supported",
+   "reason": "Row shows 11.2% vs 12.9%, \u2212170 bps; the definition is standard explanation."
+  },
+  {
+   "sentence": "Order book was \u20b93,900 crore at 30 June 2026, up from \u20b93,150 crore a year earlier (reported) [E32][E33].",
+   "id": 5,
+   "verdict": "supported",
+   "reason": "E32 and E33 give \u20b93,900 crore and \u20b93,150 crore a year ago."
+  },
+  {
+   "sentence": "Exports were 21% of revenue, against 16% a year earlier (reported) [E34][E35].",
+   "id": 6,
+   "verdict": "supported",
+   "reason": "Exports 21% of revenue vs 16% in Q1 FY26."
+  },
+  {
+   "sentence": "Management guides FY27 revenue growth of 15 to 17 percent (guidance, not a result) [E09][E10].",
+   "id": 7,
+   "verdict": "supported",
+   "reason": "Management maintains 15\u201317% revenue growth guidance; sentence correctly labels it guidance."
+  },
+  {
+   "sentence": "The new Bharuch plant, adding about 30% to cable capacity, is on track for Q3 FY27 output, says the company [E36].",
+   "id": 8,
+   "verdict": "supported",
+   "reason": "E36 states ~30% capacity addition and commercial production on track for Q3 FY27."
+  },
+  {
+   "sentence": "Promoters' pledged shares (shares borrowed against) fell to 4.1% of the promoters' holding, from 11.5% a year earlier (reported) [E48][E49].",
+   "id": 9,
+   "verdict": "supported",
+   "reason": "Pledge row shows 4.1% against 11.5% in the earliest column; share of promoter holding."
+  },
+  {
+   "sentence": "That is about 2.4% of total shares [C8].",
+   "id": 10,
+   "verdict": "supported",
+   "reason": "C8 computes 4.1% \u00d7 58.2% = 2.4% of total shares."
+  },
+  {
+   "sentence": "Net debt to equity (debt after cash, versus shareholders' money) is 0.35 times, per the CFO (management statement) [E22].",
+   "id": 11,
+   "verdict": "supported",
+   "reason": "E22 states net debt to equity of 0.35 times; attributed to CFO."
+  },
+  {
+   "sentence": "Operating profit (EBITDA) rose only 2.6%, against revenue growth of 18.0% [E26][E25].",
+   "id": 12,
+   "verdict": "supported",
+   "reason": "EBITDA +2.6% and revenue +18.0% are in the cited rows."
+  },
+  {
+   "sentence": "Management blames copper; about two-thirds of contracts pass on price changes with a one-to-two-quarter lag [E14].",
+   "id": 13,
+   "verdict": "supported",
+   "reason": "E14 says mostly copper; two-thirds of contracts have price-variation clauses resetting with a 1\u20132 quarter lag."
+  },
+  {
+   "sentence": "Receivable days (time taken to collect payment) rose from 78 to 96 [E16][E17].",
+   "id": 14,
+   "verdict": "supported",
+   "reason": "E16/E17 state receivable days rose from 78 to 96."
+  },
+  {
+   "sentence": "Management blames two state utility customers and reports no defaults [E18].",
+   "id": 15,
+   "verdict": "supported",
+   "reason": "E18 attributes it mainly to two state utilities and says no defaults seen."
+  },
+  {
+   "sentence": "A \u20b946.3 crore GST demand (indirect-tax claim) covers FY2020-21 and FY2021-22 [E44].",
+   "id": 16,
+   "verdict": "supported",
+   "reason": "E44 gives \u20b946.3 crore demand for FY2020-21 and FY2021-22 input tax credit."
+  },
+  {
+   "sentence": "That equals 56% of Q1 FY27 profit, though that profit is for one quarter only [C11].",
+   "id": 17,
+   "verdict": "supported",
+   "reason": "C11 gives 56% of Q1 FY27 PAT and notes the period mismatch."
+  },
+  {
+   "sentence": "The company expects no material impact and plans to appeal [E46][E45].",
+   "id": 18,
+   "verdict": "supported",
+   "reason": "E46 says no material impact expected; E45 says it intends to appeal."
+  },
+  {
+   "sentence": "Bharuch capex is \u20b9620 crore, with 186 crore still to spend [E19][C9].",
+   "id": 19,
+   "verdict": "supported",
+   "reason": "E19 gives \u20b9620 crore total; C9 gives \u20b9186 crore remaining."
+  },
+  {
+   "sentence": "It is funded mainly by internal accruals and some term debt, with no split given [E21].",
+   "id": 20,
+   "verdict": "partial",
+   "reason": "E21 supports the funding mix; 'no split given' is an absence claim not shown in the item."
+  },
+  {
+   "sentence": "Revenue: news says \u20b91,428 crore [E01]; the company release says \u20b91,248 crore [E23].",
+   "id": 21,
+   "verdict": "supported",
+   "reason": "E01 says \u20b91,428 crore; E23 shows \u20b91,248 crore."
+  },
+  {
+   "sentence": "Growth: news says 35% [E02]; the release says 18.0% [E25]; a promotional blog repeats 35% [E41].",
+   "id": 22,
+   "verdict": "supported",
+   "reason": "Cited items show 35% in news, 18.0% in release, and 35% in the promotional blog."
+  },
+  {
+   "sentence": "Year-ago revenue of \u20b91,058 crore [E24] gives 18.0% [C1].",
+   "id": 23,
+   "verdict": "supported",
+   "reason": "E24 and C1 show 1,058 base giving +18.0%."
+  },
+  {
+   "sentence": "Pledge: a 2024 article said 35% of promoter holding [E38]; the latest filing says 4.1% [E48], from 11.5% a year ago [E49].",
+   "id": 24,
+   "verdict": "partial",
+   "reason": "E38 gives 35%, but the cited text does not show it is from 2024."
+  },
+  {
+   "sentence": "Reported profit growth of 5.9% [E30] differs slightly from our calculated 6.5% [C4]; EBITDA 2.6% [E26] versus 2.9% [C2].",
+   "id": 25,
+   "verdict": "supported",
+   "reason": "Reported 5.9% vs calculated 6.5%, and 2.6% vs 2.9%, match cited items."
+  },
+  {
+   "sentence": "Data check: the sources lack a valuation multiple, market cap, cash-flow statement, absolute debt or cash, full-year results, dividend or buyback [C12].",
+   "id": 26,
+   "verdict": "supported",
+   "reason": "C12 lists exactly these missing items."
+  },
+  {
+   "sentence": "A tip blog (unregistered, promotional) was not used as evidence [E43][E51].",
+   "id": 27,
+   "verdict": "partial",
+   "reason": "Items show a non-registration disclaimer and a redacted instruction; they do not show the blog was excluded as evidence."
+  }
+ ],
+ "metrics": {
+  "sections_complete": true,
+  "body_words": 455,
+  "citations_total": 46,
+  "citations_valid": 46,
+  "claim_sentences": 31,
+  "claim_sentences_cited": 31,
+  "numbers_checked": 39,
+  "numbers_supported": 39,
+  "conflicts_required": 3,
+  "conflicts_disclosed": 3
+ },
+ "issues": [
+  {
+   "severity": "warning",
+   "code": "entailment_partial",
+   "message": "'Sarvottam Cables makes cables, and copper is its main raw material [E06].': E06 supports copper as main raw material; the cited text does not say the company makes cables."
+  },
+  {
+   "severity": "warning",
+   "code": "entailment_partial",
+   "message": "'It is funded mainly by internal accruals and some term debt, with no split given [E21].': E21 supports the funding mix; 'no split given' is an absence claim not shown in the item."
+  },
+  {
+   "severity": "warning",
+   "code": "entailment_partial",
+   "message": "'Pledge: a 2024 article said 35% of promoter holding [E38]; the latest filing says 4.1% [E48], from 1': E38 gives 35%, but the cited text does not show it is from 2024."
+  },
+  {
+   "severity": "warning",
+   "code": "entailment_partial",
+   "message": "'A tip blog (unregistered, promotional) was not used as evidence [E43][E51].': Items show a non-registration disclaimer and a redacted instruction; they do not show the blog was excluded as evidence."
+  }
+ ]
+}

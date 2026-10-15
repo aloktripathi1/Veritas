@@ -1,0 +1,226 @@
+{
+ "mode": "robust",
+ "diagnostics": [
+  "Loaded 8 document(s) of 8 file(s) in research_pack",
+  "INJECTION D5 (multibaggeralerts_2026-08-12.md): ['embedded instruction in HTML comment (247 chars)']",
+  "EXCLUDED D6 (nagpurcitytimes_2026-08-20.md): no ticker or legal name; similar names only: ['Sarvottam Cable Network', 'Sarvottam Cable penalised']"
+ ],
+ "llm_calls": 3,
+ "seconds": 103.0,
+ "repaired": false,
+ "repairs": 0,
+ "usage": {
+  "input_tokens": 24704,
+  "output_tokens": 16758,
+  "calls": 3
+ },
+ "entailment": [
+  {
+   "sentence": "Sarvottam Cables makes cables and is building a new plant at Bharuch in Gujarat [E35].",
+   "id": 1,
+   "verdict": "supported",
+   "reason": "E35 confirms the Bharuch plant adds cable capacity, which implies the company makes cables."
+  },
+  {
+   "sentence": "Revenue rose 18.0% to \u20b91,248 crore in Q1 FY27 (April\u2013June 2026), per the company's filing [E22][E24].",
+   "id": 2,
+   "verdict": "supported",
+   "reason": "Both table rows show revenue of 1,248 against 1,058, up 18.0%."
+  },
+  {
+   "sentence": "Profit after tax was \u20b982 crore, up 5.9% [E29].",
+   "id": 3,
+   "verdict": "supported",
+   "reason": "E29 shows profit after tax of 82 against 77, up 5.9%."
+  },
+  {
+   "sentence": "The EBITDA margin (operating profit as a share of revenue) fell 170 bps (1.7 percentage points) to 11.2% [E27].",
+   "id": 4,
+   "verdict": "supported",
+   "reason": "E27 shows EBITDA margin of 11.2% against 12.9%, down 170 bps."
+  },
+  {
+   "sentence": "Order book was \u20b93,900 crore at 30 June 2026, against \u20b93,150 crore a year earlier (reported result) [E31].",
+   "id": 5,
+   "verdict": "supported",
+   "reason": "E31 gives the order book as \u20b93,900 crore against \u20b93,150 crore a year ago."
+  },
+  {
+   "sentence": "Exports were 21% of total revenue, up from 16% (reported result) [E33].",
+   "id": 6,
+   "verdict": "supported",
+   "reason": "E33 gives exports as 21% of revenue against 16% in Q1 FY26."
+  },
+  {
+   "sentence": "Management keeps its FY27 revenue growth guidance of 15 to 17 percent (guidance, not a result) [E08][E09].",
+   "id": 7,
+   "verdict": "supported",
+   "reason": "Both quotes say management maintains revenue growth guidance of 15 to 17 percent."
+  },
+  {
+   "sentence": "Bharuch, adding about 30% to cable capacity, is expected to start in Q3 FY27 (management expectation) [E35].",
+   "id": 8,
+   "verdict": "supported",
+   "reason": "E35 states the ~30% capacity addition and the Q3 FY27 start as on track."
+  },
+  {
+   "sentence": "Pledged shares (promoter borrowings against their holding) were 4.1% of the promoters' holding, down from 11.5% a year earlier (reported result) [E46][E48].",
+   "id": 9,
+   "verdict": "partial",
+   "reason": "Values are shown, but the column headers are missing, so 'a year earlier' for 11.5% is not shown."
+  },
+  {
+   "sentence": "That is 2.4% of total shares [C8].",
+   "id": 10,
+   "verdict": "supported",
+   "reason": "C8 calculates 4.1% x 58.2% = 2.4% of total shares."
+  },
+  {
+   "sentence": "EBITDA rose just 2.6% against 18.0% revenue growth [E25][E24].",
+   "id": 11,
+   "verdict": "supported",
+   "reason": "E25 shows EBITDA up 2.6% and E24 shows revenue up 18.0%."
+  },
+  {
+   "sentence": "Management expects to pass on copper costs over two quarters; that is a forecast [E36].",
+   "id": 12,
+   "verdict": "supported",
+   "reason": "E36 states management expects to pass on copper costs over the next two quarters."
+  },
+  {
+   "sentence": "Receivable days (how long customers take to pay) rose from 78 to 96 [E15][E16].",
+   "id": 13,
+   "verdict": "supported",
+   "reason": "Both quotes say receivable days rose from 78 to 96 over the last year."
+  },
+  {
+   "sentence": "Mainly two state utilities are slow; management reports no defaults [E17].",
+   "id": 14,
+   "verdict": "supported",
+   "reason": "E17 says two large state utilities are slow and management has seen no defaults."
+  },
+  {
+   "sentence": "The company intends to appeal a \u20b946.3 crore GST demand and expects no material impact [E43][E44].",
+   "id": 15,
+   "verdict": "supported",
+   "reason": "E43 gives the \u20b946.3 crore demand. E44 gives the intent to appeal and no expected material impact."
+  },
+  {
+   "sentence": "That equals 56% of Q1 profit after tax, which sizes the exposure only [C11].",
+   "id": 16,
+   "verdict": "supported",
+   "reason": "C11 calculates 56% of Q1 profit after tax and notes it sizes the exposure only."
+  },
+  {
+   "sentence": "Bharuch capex is \u20b9620 crore, with \u20b9186 crore left to spend [C9].",
+   "id": 17,
+   "verdict": "supported",
+   "reason": "C9 gives \u20b9620 crore capex with \u20b9186 crore remaining."
+  },
+  {
+   "sentence": "Funding is internal accruals and some term debt [E20].",
+   "id": 18,
+   "verdict": "supported",
+   "reason": "E20 says funding is mainly internal accruals and some term debt."
+  },
+  {
+   "sentence": "Net debt to equity (net borrowings relative to shareholders' funds) is 0.35 times [E21].",
+   "id": 19,
+   "verdict": "supported",
+   "reason": "E21 states net debt to equity is 0.35 times."
+  },
+  {
+   "sentence": "Revenue: a news report says \u20b91,428 crore [E01]; the company filing says \u20b91,248 crore [E22].",
+   "id": 20,
+   "verdict": "supported",
+   "reason": "E01 gives \u20b91,428 crore and E22 gives \u20b91,248 crore, so both are correctly stated."
+  },
+  {
+   "sentence": "The filing is better supported as the primary source; the reason for the gap is unresolved [E22].",
+   "id": 21,
+   "verdict": "partial",
+   "reason": "E22 only shows the filing figure; why the filing is better supported and that the gap is unresolved are not cited."
+  },
+  {
+   "sentence": "Growth: news and a tip blog say 35% [E02][E40]; the filing says 18.0% [E24], matching our calculation [C1].",
+   "id": 22,
+   "verdict": "supported",
+   "reason": "E02 and E40 say 35%. E24 and C1 give 18.0%, which matches the calculation."
+  },
+  {
+   "sentence": "The filing wins; the blog is unregistered [E42] and carried a redacted embedded instruction [E50].",
+   "id": 23,
+   "verdict": "partial",
+   "reason": "E42 and E50 support unregistered and a redacted instruction, but 'the filing wins' is not shown in them."
+  },
+  {
+   "sentence": "Pledging: a 2024 news report said 35% [E37]; the June 2026 filing says 4.1%, after 6.0% and 11.5% [E46][E47][E48].",
+   "id": 24,
+   "verdict": "partial",
+   "reason": "35% and 4.1%, 6.0%, 11.5% appear, but the 2024 and June 2026 dates and the column order are not in the quotes."
+  },
+  {
+   "sentence": "The old figure is stale; the company did not comment then [E38].",
+   "id": 25,
+   "verdict": "partial",
+   "reason": "E38 supports no comment from the company; 'stale' is a judgement, and the quote gives no date."
+  },
+  {
+   "sentence": "Reported EBITDA growth of 2.6% [E25] and profit growth of 5.9% [E29] differ slightly from our 2.9% [C2] and 6.5% [C4]; we use the reported figures.",
+   "id": 26,
+   "verdict": "supported",
+   "reason": "Reported 2.6% and 5.9% against calculated 2.9% and 6.5% are correctly stated."
+  },
+  {
+   "sentence": "The 0.35 times net debt to equity has no stated date [E21].",
+   "id": 27,
+   "verdict": "supported",
+   "reason": "E21 states the ratio with no date attached."
+  },
+  {
+   "sentence": "Missing from the sources: valuation multiples, market value, cash-flow statement, absolute debt or cash, full-year results, dividends or buybacks [C12].",
+   "id": 28,
+   "verdict": "supported",
+   "reason": "C12 lists exactly these items as missing from the relevant documents."
+  }
+ ],
+ "metrics": {
+  "sections_complete": true,
+  "body_words": 432,
+  "citations_total": 45,
+  "citations_valid": 45,
+  "claim_sentences": 28,
+  "claim_sentences_cited": 28,
+  "numbers_checked": 39,
+  "numbers_supported": 39,
+  "conflicts_required": 3,
+  "conflicts_disclosed": 3
+ },
+ "issues": [
+  {
+   "severity": "warning",
+   "code": "entailment_partial",
+   "message": "\"Pledged shares (promoter borrowings against their holding) were 4.1% of the promoters' holding, down\": Values are shown, but the column headers are missing, so 'a year earlier' for 11.5% is not shown."
+  },
+  {
+   "severity": "warning",
+   "code": "entailment_partial",
+   "message": "'The filing is better supported as the primary source; the reason for the gap is unresolved [E22].': E22 only shows the filing figure; why the filing is better supported and that the gap is unresolved are not cited."
+  },
+  {
+   "severity": "warning",
+   "code": "entailment_partial",
+   "message": "'The filing wins; the blog is unregistered [E42] and carried a redacted embedded instruction [E50].': E42 and E50 support unregistered and a redacted instruction, but 'the filing wins' is not shown in them."
+  },
+  {
+   "severity": "warning",
+   "code": "entailment_partial",
+   "message": "'Pledging: a 2024 news report said 35% [E37]; the June 2026 filing says 4.1%, after 6.0% and 11.5% [E': 35% and 4.1%, 6.0%, 11.5% appear, but the 2024 and June 2026 dates and the column order are not in the quotes."
+  },
+  {
+   "severity": "warning",
+   "code": "entailment_partial",
+   "message": "'The old figure is stale; the company did not comment then [E38].': E38 supports no comment from the company; 'stale' is a judgement, and the quote gives no date."
+  }
+ ]
+}

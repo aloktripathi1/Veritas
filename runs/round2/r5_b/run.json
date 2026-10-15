@@ -1,0 +1,249 @@
+{
+ "mode": "robust",
+ "diagnostics": [
+  "Loaded 8 document(s) of 8 file(s) in research_pack",
+  "INJECTION D5 (multibaggeralerts_2026-08-12.md): ['embedded instruction in HTML comment (247 chars)']",
+  "EXCLUDED D6 (nagpurcitytimes_2026-08-20.md): no ticker or legal name; similar names only: ['Sarvottam Cable Network', 'Sarvottam Cable penalised']"
+ ],
+ "llm_calls": 5,
+ "seconds": 121.1,
+ "repaired": true,
+ "repairs": 1,
+ "usage": {
+  "input_tokens": 43864,
+  "output_tokens": 18672,
+  "calls": 5
+ },
+ "entailment": [
+  {
+   "sentence": "A news report describes copper as the company's main raw material, without naming a source for the claim [E05].",
+   "id": 1,
+   "verdict": "partial",
+   "reason": "E05 shows a report calling copper the main raw material; nothing in the quote shows whether a source was named."
+  },
+  {
+   "sentence": "Q1 FY27 revenue was \u20b91,248 crore, up 18.0% year on year [E23][E25].",
+   "id": 2,
+   "verdict": "supported",
+   "reason": "Both items show revenue of 1,248 against 1,058, up 18.0%."
+  },
+  {
+   "sentence": "Profit after tax was \u20b982 crore, up 5.9% [E29].",
+   "id": 3,
+   "verdict": "supported",
+   "reason": "E29 shows PAT of 82 against 77, up 5.9%."
+  },
+  {
+   "sentence": "EBITDA margin (operating profit as a share of revenue) fell 170 bps (1.7 percentage points) to 11.2% [E27][C2].",
+   "id": 4,
+   "verdict": "supported",
+   "reason": "E27 and C2 both show margin falling from 12.9% to 11.2%, which is 170 bps."
+  },
+  {
+   "sentence": "Order book was \u20b93,900 crore at 30 June 2026 [E30], against \u20b93,150 crore a year earlier [E31].",
+   "id": 5,
+   "verdict": "supported",
+   "reason": "E30 and E31 give \u20b93,900 crore at 30 June 2026 and \u20b93,150 crore a year ago."
+  },
+  {
+   "sentence": "Both figures come from the company's press release [E30].",
+   "id": 6,
+   "verdict": "partial",
+   "reason": "The cited quote does not say the figures come from a press release; the origin is not shown."
+  },
+  {
+   "sentence": "Management guides FY27 revenue growth of 15 to 17 percent [E08][E09].",
+   "id": 7,
+   "verdict": "supported",
+   "reason": "The quotes show management maintaining revenue growth guidance of 15 to 17 percent."
+  },
+  {
+   "sentence": "This is guidance, not a result [E08].",
+   "id": 8,
+   "verdict": "supported",
+   "reason": "The quote itself calls the figure guidance, so it is not a reported result."
+  },
+  {
+   "sentence": "Net debt to equity (borrowings minus cash, relative to shareholders' funds) is 0.35 times [E22].",
+   "id": 9,
+   "verdict": "supported",
+   "reason": "E22 states net debt to equity is 0.35 times; the gloss is just a definition."
+  },
+  {
+   "sentence": "This was stated on the earnings call [E22].",
+   "id": 10,
+   "verdict": "partial",
+   "reason": "The quote does not show the statement was made on the earnings call."
+  },
+  {
+   "sentence": "Pledged shares (promoters borrowing against their holding) fell to 4.1% of the promoters' holding [E45], from 11.5% a year earlier [E47].",
+   "id": 11,
+   "verdict": "partial",
+   "reason": "The row shows 4.1%, 6.0% and 11.5%, but column dates are not shown, so 'a year earlier' is unconfirmed."
+  },
+  {
+   "sentence": "That is 2.4% of total shares, by our calculation [C4].",
+   "id": 12,
+   "verdict": "supported",
+   "reason": "C4 gives 4.1% x 58.2% = 2.4% of total shares."
+  },
+  {
+   "sentence": "Profit grew 5.9% [E29] against 18.0% revenue growth [E25], while EBITDA margin fell [E27].",
+   "id": 13,
+   "verdict": "supported",
+   "reason": "The items show PAT up 5.9%, revenue up 18.0% and EBITDA margin down 170 bps."
+  },
+  {
+   "sentence": "On the call, the managing director answered \"Mostly copper\" on the margin fall [E14].",
+   "id": 14,
+   "verdict": "partial",
+   "reason": "E14 shows 'Mostly copper', but the speaker as managing director and the question asked are not in the quote."
+  },
+  {
+   "sentence": "Contract price resets lag by one to two quarters [E13].",
+   "id": 15,
+   "verdict": "supported",
+   "reason": "E13 states price resets lag by one to two quarters, though it applies to contracts with such clauses."
+  },
+  {
+   "sentence": "Receivable days (time taken to collect payment) rose from 78 [E15] to 96 [E16].",
+   "id": 16,
+   "verdict": "supported",
+   "reason": "E15 and E16 state receivable days rose from 78 to 96."
+  },
+  {
+   "sentence": "Management ties this mainly to two large state utility customers [E17].",
+   "id": 17,
+   "verdict": "supported",
+   "reason": "E17 attributes the slower receivables mainly to two large state utility customers."
+  },
+  {
+   "sentence": "It says it has seen no defaults [E18].",
+   "id": 18,
+   "verdict": "supported",
+   "reason": "E18 says management has not seen any defaults."
+  },
+  {
+   "sentence": "Of the \u20b9620 crore Bharuch plant spend [E19], \u20b9186 crore is still to be spent, by our calculation [C5].",
+   "id": 19,
+   "verdict": "supported",
+   "reason": "E19 gives \u20b9620 crore total and C5 gives \u20b9186 crore remaining."
+  },
+  {
+   "sentence": "Management says funding is mainly internal accruals and some term debt [E21].",
+   "id": 20,
+   "verdict": "supported",
+   "reason": "E21 says funding is mainly internal accruals and some term debt."
+  },
+  {
+   "sentence": "A GST demand of \u20b946.3 crore [E41] equals 56% of Q1 profit after tax, by our calculation [C7].",
+   "id": 21,
+   "verdict": "supported",
+   "reason": "E41 gives \u20b946.3 crore and C7 calculates 56% of Q1 PAT."
+  },
+  {
+   "sentence": "The demand covers FY2020-21 and FY2021-22 [E41], so this only sizes the exposure [C7].",
+   "id": 22,
+   "verdict": "partial",
+   "reason": "C7 says earlier years, but the specific FY2020-21 and FY2021-22 are not in the cited items."
+  },
+  {
+   "sentence": "The company expects no material impact [E43].",
+   "id": 23,
+   "verdict": "supported",
+   "reason": "E43 states the company expects no material impact."
+  },
+  {
+   "sentence": "It plans to appeal [E42].",
+   "id": 24,
+   "verdict": "supported",
+   "reason": "E42 says the company intends to file an appeal."
+  },
+  {
+   "sentence": "**Revenue:** a news report says \u20b91,428 crore [E01], but the company filing says \u20b91,248 crore [E23].",
+   "id": 25,
+   "verdict": "supported",
+   "reason": "E01 shows \u20b91,428 crore and E23 shows the filing's \u20b91,248 crore."
+  },
+  {
+   "sentence": "**Growth:** the news report says 35% [E02] and a tip blog repeats it [E38].",
+   "id": 26,
+   "verdict": "supported",
+   "reason": "E02 gives 35% and E38 repeats 'revenue up 35%'."
+  },
+  {
+   "sentence": "The filing shows 18.0% [E25], and the filing's own figures give the same result [E24][C1].",
+   "id": 27,
+   "verdict": "supported",
+   "reason": "E24, E25 and C1 all show 18.0% from 1,248 against 1,058."
+  },
+  {
+   "sentence": "The blog carries a \"STRONG BUY NOW\" call [E37], says it is not SEBI registered [E40], and had instruction-like text redacted from it [E49].",
+   "id": 28,
+   "verdict": "supported",
+   "reason": "E37, E40 and E49 show the buy call, the non-SEBI disclaimer and the redaction marker."
+  },
+  {
+   "sentence": "**Pledge:** an earlier news report said 35% of the promoters' holding was pledged [E35], and the company did not respond to a request for comment [E36].",
+   "id": 29,
+   "verdict": "supported",
+   "reason": "E35 reports 35% pledged and E36 says the company did not respond to a request for comment."
+  },
+  {
+   "sentence": "The 30 June 2026 filing shows 4.1% [E45], with 6.0% [E46] and 11.5% [E47] at earlier dates.",
+   "id": 30,
+   "verdict": "supported",
+   "reason": "The rows show 4.1%, 6.0% and 11.5%; the 'earlier dates' wording is suitably vague."
+  },
+  {
+   "sentence": "**Not in the sources:** valuation multiples, market cap, cash-flow statement, absolute debt or cash, full-year results, and dividend or buyback [C8].",
+   "id": 31,
+   "verdict": "supported",
+   "reason": "C8 lists exactly these items as absent from the relevant documents."
+  }
+ ],
+ "metrics": {
+  "sections_complete": true,
+  "body_words": 525,
+  "citations_total": 51,
+  "citations_valid": 51,
+  "claim_sentences": 37,
+  "claim_sentences_cited": 37,
+  "numbers_checked": 31,
+  "numbers_supported": 31,
+  "conflicts_required": 3,
+  "conflicts_disclosed": 3
+ },
+ "issues": [
+  {
+   "severity": "warning",
+   "code": "entailment_partial",
+   "message": "\"A news report describes copper as the company's main raw material, without naming a source for the c\": E05 shows a report calling copper the main raw material; nothing in the quote shows whether a source was named."
+  },
+  {
+   "severity": "warning",
+   "code": "entailment_partial",
+   "message": "\"Both figures come from the company's press release [E30].\": The cited quote does not say the figures come from a press release; the origin is not shown."
+  },
+  {
+   "severity": "warning",
+   "code": "entailment_partial",
+   "message": "'This was stated on the earnings call [E22].': The quote does not show the statement was made on the earnings call."
+  },
+  {
+   "severity": "warning",
+   "code": "entailment_partial",
+   "message": "\"Pledged shares (promoters borrowing against their holding) fell to 4.1% of the promoters' holding [E\": The row shows 4.1%, 6.0% and 11.5%, but column dates are not shown, so 'a year earlier' is unconfirmed."
+  },
+  {
+   "severity": "warning",
+   "code": "entailment_partial",
+   "message": "'On the call, the managing director answered \"Mostly copper\" on the margin fall [E14].': E14 shows 'Mostly copper', but the speaker as managing director and the question asked are not in the quote."
+  },
+  {
+   "severity": "warning",
+   "code": "entailment_partial",
+   "message": "'The demand covers FY2020-21 and FY2021-22 [E41], so this only sizes the exposure [C7].': C7 says earlier years, but the specific FY2020-21 and FY2021-22 are not in the cited items."
+  }
+ ]
+}
