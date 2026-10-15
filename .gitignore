@@ -1,0 +1,10 @@
+.env
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+*.egg-info/
+candidate.zip
+.coverage
+nohup.out
+.ruff_cache/
