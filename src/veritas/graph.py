@@ -200,20 +200,30 @@ def build_graph(llm: LLM, progress: Callable[[str], None] | None = None, checkpo
     return g.compile(checkpointer=checkpointer or InMemorySaver())
 
 
+def run_graph_state(ticker: str, legal_name: str, directory: str, llm: LLM, today: str = "2026-09-23", system_prompt: str | None = None,
+                    use_entailment: bool = True, progress: Callable[[str], None] | None = None, *,
+                    checkpointer: BaseCheckpointSaver | None = None, thread_id: str | None = None) -> VeritasState:
+    """Run the graph and return the final state (documents, line maps, registry, brief, validation, ...)."""
+    graph = build_graph(llm, progress, checkpointer)
+    system = Path(system_prompt).read_text(encoding="utf-8") if system_prompt else prompt("system")
+    config = {"configurable": {"thread_id": thread_id or uuid.uuid4().hex}}
+    return graph.invoke({"ticker": ticker, "legal_name": legal_name, "directory": directory, "today": today, "system": system,
+                         "use_entailment": use_entailment, "started": time.time()}, config)
+
+
+def to_result(s: VeritasState, llm: LLM) -> Result:
+    return Result(mode="robust", brief=s["brief"], docs=s["docs"], evidence=s["evidence"], calcs=s["calcs"], conflicts=s["conflicts"],
+                  validation=s["validation"], diagnostics=s["diagnostics"], llm_calls=s["llm_calls"], seconds=time.time() - s["started"],
+                  repaired=s["repairs"] > 0, repairs=s["repairs"], raw_extraction=s["raw_extraction"], entailment=s["entailment"],
+                  usage=dict(getattr(llm, "usage", {}) or {}))
+
+
 def run_graph(ticker: str, legal_name: str, directory: str, llm: LLM, today: str = "2026-09-23", system_prompt: str | None = None,
               use_entailment: bool = True, progress: Callable[[str], None] | None = None, *,
               checkpointer: BaseCheckpointSaver | None = None, thread_id: str | None = None) -> Result:
     """Same inputs and Result as `pipeline.run("robust", ...)`. Pass `thread_id` (and keep the checkpointer) to inspect per-node state afterwards."""
-    started = time.time()
-    graph = build_graph(llm, progress, checkpointer)
-    system = Path(system_prompt).read_text(encoding="utf-8") if system_prompt else prompt("system")
-    config = {"configurable": {"thread_id": thread_id or uuid.uuid4().hex}}
-    s = graph.invoke({"ticker": ticker, "legal_name": legal_name, "directory": directory, "today": today, "system": system,
-                      "use_entailment": use_entailment, "started": started}, config)
-    return Result(mode="robust", brief=s["brief"], docs=s["docs"], evidence=s["evidence"], calcs=s["calcs"], conflicts=s["conflicts"],
-                  validation=s["validation"], diagnostics=s["diagnostics"], llm_calls=s["llm_calls"], seconds=time.time() - started,
-                  repaired=s["repairs"] > 0, repairs=s["repairs"], raw_extraction=s["raw_extraction"], entailment=s["entailment"],
-                  usage=dict(getattr(llm, "usage", {}) or {}))
+    return to_result(run_graph_state(ticker, legal_name, directory, llm, today, system_prompt, use_entailment, progress,
+                                     checkpointer=checkpointer, thread_id=thread_id), llm)
 
 
 def node_trace(graph, thread_id: str) -> list[dict[str, Any]]:

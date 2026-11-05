@@ -10,7 +10,7 @@ dependencies = ["pydantic==2.13.4", "anthropic==0.111.0"]
 
 [project.optional-dependencies]
 graph = ["langgraph==1.2.20"]
-mcp = ["mcp==1.30.0"]
+mcp = ["mcp==1.30.0", "langgraph==1.2.20"]   # the server runs the graph engine
 
 [project.scripts]
 veritas-mcp = "veritas.mcp_server:main"
