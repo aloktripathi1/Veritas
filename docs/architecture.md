@@ -25,7 +25,7 @@ Modes (same model, same corpus) isolate design changes:
 - `structured`: extraction -> registry -> calc/conflicts -> synthesis. No identity/injection handling, no repair.
 - `robust`: structured + identity gate + injection neutralisation + reliability guidance + advisory entailment judge + up to two repair passes.
 
-Modules: `src/veritas/{loader,identity,injection,evidence,calc,validate,pipeline,graph,mcp_server,render,llm,cli}.py`. Prompts live in `prompts/`, separate from logic. Provider code is confined to `llm.py` (Anthropic SDK; `claude` CLI; scripted test double).
+Modules: `src/veritas/{loader,identity,injection,evidence,calc,validate,pipeline,graph,render,llm,cli}.py` plus the service layer `{api,db,paths,logging_setup,mcp_server,mcp_client,langchain_tools,evalkit,sim}.py` (all optional extras; the core pipeline imports none of them). Prompts live in `prompts/`, separate from logic. Provider code is confined to `llm.py` (Anthropic SDK; `claude` CLI; scripted test double).
 
 ## Source-assessment policy
 Applied by the model under `prompts/system.md`, with deterministic support: who is speaking (filing vs transcript vs news vs tip blog), date versus a reporting period, claim type (fact / management statement / forecast / allegation / opinion), corroboration across documents, company identity. Official statements are not assumed true (the GST "no material impact" line is labelled the company's own view); news is not assumed false. Sentiment is never used as reliability.
@@ -59,3 +59,17 @@ The judge is due on the first draft, and after a repair only when validation is 
 
 ## MCP server (`mcp_server.py`)
 Four tools over stdio (`screen_documents`, `build_brief`, `get_evidence`, `validate_brief`). `build_brief` runs the graph engine and keeps the final state under a `run_id`; the other two tools read it. `docs_dir` is resolved (symlinks included) and must stay inside `VERITAS_DOCS_ROOT`. Domain errors (`LoadError`, `LLMError`, `PipelineError`) become tool errors.
+
+## Service layer
+```mermaid
+flowchart LR
+    C[HTTP client] -->|POST /briefs| API[api.py FastAPI]
+    API -->|create_run, queued| DB[(db.py: SQLite or Postgres)]
+    API -->|background job| ENG{engine}
+    ENG --> G[graph.py] & P[pipeline.run]
+    G & P -->|Result| DB
+    C -->|GET status, evidence, stats| API --> DB
+    C -->|POST validate| API -->|stored registry + reloaded docs| V[validate_brief]
+    M[MCP client / LangChain agent] --> S[mcp_server.py] --> G
+```
+`api.py` and `mcp_server.py` share path confinement (`paths.py`); the API persists every run (runs, evidence, calculations, conflicts, issues) through `db.Store`, whose schema is created by Alembic migrations. Re-validation after a restart reloads and re-screens the source documents and reads the registry from SQL, so it needs no LLM and no in-memory state.

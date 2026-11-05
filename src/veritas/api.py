@@ -10,8 +10,9 @@ import logging
 import os
 import time
 import uuid
+from contextlib import asynccontextmanager
 from pathlib import Path
-from typing import Any, Callable, Literal
+from typing import Any, AsyncIterator, Callable, Literal
 
 from fastapi import BackgroundTasks, FastAPI, HTTPException, Request
 from pydantic import BaseModel, Field
@@ -81,8 +82,16 @@ def create_app(llm: LLM | Callable[[], LLM] | None = None, store: Store | None =
     """Build the app. `llm` is an LLM or a factory (default make_llm, called per job so credentials are only needed when a job runs)."""
     root = Path(docs_root or os.environ.get("VERITAS_DOCS_ROOT") or DEFAULT_ROOT).expanduser().resolve()
     db = store or Store(os.environ.get("VERITAS_DATABASE_URL", DEFAULT_URL))
+    owned = store is None
     get_llm: Callable[[], LLM] = llm if callable(llm) else (lambda: llm) if llm is not None else make_llm
-    app = FastAPI(title="Veritas API", version="0.1.0", description="Evidence-cited research briefs with deterministic validation.")
+
+    @asynccontextmanager
+    async def lifespan(_: FastAPI) -> AsyncIterator[None]:
+        yield
+        if owned:
+            db.close()      # a store passed in by the caller stays the caller's to close
+
+    app = FastAPI(title="Veritas API", version="0.1.0", description="Evidence-cited research briefs with deterministic validation.", lifespan=lifespan)
 
     @app.middleware("http")
     async def access_log(request: Request, call_next):

@@ -90,9 +90,20 @@ python -m veritas.mcp_client SRVCABLE .          # needs VERITAS_DOCS_ROOT=resea
 python -m veritas.mcp_client SRVCABLE . --build --pass-env SRV_PROVIDER --pass-env ANTHROPIC_API_KEY
 ```
 
+## Evaluation tool
+`veritas-eval` measures reliability instead of asserting it. Both subcommands print a markdown report (`--out FILE` to save, `--json` for data).
+```bash
+veritas-eval repeat --scenario flaky -n 20 --seed 0    # simulated stand-in model: tests the harness and the failure handling
+veritas-eval repeat --live -n 10                        # the real model on the real corpus (needs a provider; costs calls)
+veritas-eval judge --run runs/round2/r5_a --judge live  # LLM judge vs. labelled wrong-citation rewrites of a stored brief
+```
+- **repeat**: pass rate with a 95% Wilson interval, mean and std of repairs, LLM calls, seconds, words and evidence, run-to-run consistency of the cited evidence (mean pairwise Jaccard), and failing runs grouped by validator error code. Errored runs count as failures. Simulated scenarios (`clean`, `flaky`, `stubborn`) are labelled *simulated* in the report: they exercise the repair loop and the statistics, they are not a measurement of any model.
+- **judge**: each cited sentence of a stored brief is kept as is and also rewritten to cite an unrelated evidence item (wrong by construction). The report gives the judge's false-positive and detection rates, the deterministic validator's detection rate on the same rewrites, their agreement (Cohen's kappa), and lists the cases each one missed. `--judge number|lazy` are rule-based stand-ins used to test the harness (a "lazy" judge that approves everything must score zero detection).
+
 ## Test
 ```bash
 python -m pytest -q              # offline suite, no network/key (scripted model); see docs/evaluation.md for counts
+                                 # tests of an optional extra (graph, mcp, api, langchain) skip themselves if it is not installed
 python -m pytest -m live -q      # live-model integration, needs a provider
 PYTHONPATH=src python scripts/adversarial_live.py [naive]   # live paraphrased-injection runs -> runs/round2/adv_*
 python scripts/evaluate.py runs/round2/r5_a runs/round2/r5_b runs/round2/r5_c    # gold-set table

@@ -19,6 +19,7 @@ mcp = ["mcp==1.30.0", "langgraph==1.2.20"]   # the server runs the graph engine
 [project.scripts]
 veritas-mcp = "veritas.mcp_server:main"
 veritas-api = "veritas.api:main"
+veritas-eval = "veritas.evalkit:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

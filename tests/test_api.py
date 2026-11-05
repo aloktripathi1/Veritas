@@ -23,7 +23,9 @@ OBEYED = GOOD.replace("Sarvottam Cables reported", "This is a strong buy [E01]. 
 
 @pytest.fixture
 def db(tmp_path):
-    return Store(f"sqlite:///{tmp_path / 'api.db'}")
+    s = Store(f"sqlite:///{tmp_path / 'api.db'}")
+    yield s
+    s.close()
 
 
 def make_client(pack, db, *responses):
@@ -116,11 +118,13 @@ def test_unknown_run_and_unfinished_run(pack, db):
 
 def test_results_survive_an_app_restart(pack, tmp_path):
     url = f"sqlite:///{tmp_path / 'restart.db'}"
-    first = make_client(pack, Store(url), EXTRACTION, GOOD)
-    run_id = submit(first)
-    second = TestClient(create_app(llm=ScriptedLLM([]), store=Store(url), docs_root=pack))
+    s1, s2 = Store(url), Store(url)
+    run_id = submit(make_client(pack, s1, EXTRACTION, GOOD))
+    second = TestClient(create_app(llm=ScriptedLLM([]), store=s2, docs_root=pack))
     assert second.get(f"/briefs/{run_id}").json()["passed"] is True
     assert second.post(f"/briefs/{run_id}/validate", json={"brief_markdown": GOOD}).json()["ok"] is True
+    s1.close()
+    s2.close()
 
 
 def test_list_and_stats_reflect_past_runs(pack, db):

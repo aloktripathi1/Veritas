@@ -20,17 +20,21 @@ def finished(pack, responses):
 
 @pytest.fixture
 def store(tmp_path):
-    return Store(f"sqlite:///{tmp_path / 'v.db'}")
+    s = Store(f"sqlite:///{tmp_path / 'v.db'}")
+    yield s
+    s.close()
 
 
 def test_migrations_match_the_orm_models(tmp_path):
     url = f"sqlite:///{tmp_path / 'm.db'}"
     upgrade(url)
-    insp = inspect(create_engine(url))
+    engine = create_engine(url)
+    insp = inspect(engine)
     assert set(insp.get_table_names()) == set(Base.metadata.tables) | {"alembic_version"}
     for name, table in Base.metadata.tables.items():
         assert {c["name"] for c in insp.get_columns(name)} == {c.name for c in table.columns}, name
     assert {i["name"] for i in insp.get_indexes("runs")} == {"ix_runs_ticker_created"}
+    engine.dispose()
     upgrade(url)   # idempotent
 
 
@@ -39,6 +43,7 @@ def test_in_memory_store_works(pack):
     rid = s.create_run("SRVCABLE", "Sarvottam Cables Ltd", pack, False)
     s.save_result(rid, finished(pack, [EXTRACTION, GOOD]))
     assert s.get_run(rid)["status"] == "done"
+    s.close()
 
 
 def test_run_round_trips_through_the_database(store, pack):

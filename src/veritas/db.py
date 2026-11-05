@@ -122,6 +122,9 @@ class Store:
             upgrade(url, self.engine)
         self._sessions = sessionmaker(self.engine, expire_on_commit=False)
 
+    def close(self) -> None:
+        self.engine.dispose()
+
     # ---- writes ----
     def create_run(self, ticker: str, company: str, docs_dir: str, use_entailment: bool) -> str:
         run_id = uuid.uuid4().hex[:12]
