@@ -79,6 +79,17 @@ claude mcp add veritas --env VERITAS_DOCS_ROOT=$PWD/research_pack --env SRV_PROV
 ```
 Paths: `docs_dir` is relative to `VERITAS_DOCS_ROOT` (default: this repo's `research_pack/`) or absolute inside it; `..`, symlink escapes and missing directories are rejected as tool errors. The LLM comes from `make_llm()` (same `SRV_PROVIDER`/`SRV_MODEL`/`ANTHROPIC_API_KEY` settings, never logged or returned); `build_brief` takes about as long as a CLI run. Runs are held in memory (newest 20). `mcp` is pinned to 1.30.0 because 2.x renames `FastMCP` to `MCPServer`.
 
+## LangChain agent and MCP client
+`src/veritas/langchain_tools.py` exposes the four MCP tools as LangChain `StructuredTool`s (they call the same FastMCP server object, so path confinement, error mapping and run storage are shared) and `build_agent(server, chat_model)` wires them into a `langchain.agents.create_agent` tool-calling agent; tool errors come back to the model as messages. Any tool-calling LangChain chat model works. `langchain-anthropic` is not a dependency because its current releases need a newer `anthropic` SDK than the `anthropic==0.111.0` this repo pins; install it in a separate environment if you want Claude as the agent's model. The tests drive the agent with a scripted chat model.
+```bash
+pip install -e '.[langchain]'
+```
+`python -m veritas.mcp_client` is a plain MCP client: it starts `veritas.mcp_server` as a stdio subprocess, lists the tools, screens a folder and, with `--build`, builds a brief and re-validates it. The child process gets a minimal environment; pass settings explicitly with `--pass-env NAME`.
+```bash
+python -m veritas.mcp_client SRVCABLE .          # needs VERITAS_DOCS_ROOT=research_pack (the default)
+python -m veritas.mcp_client SRVCABLE . --build --pass-env SRV_PROVIDER --pass-env ANTHROPIC_API_KEY
+```
+
 ## Test
 ```bash
 python -m pytest -q              # offline suite, no network/key (scripted model); see docs/evaluation.md for counts

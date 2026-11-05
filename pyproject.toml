@@ -13,6 +13,7 @@ graph = ["langgraph==1.2.20"]
 db = ["sqlalchemy==2.1.6", "alembic==1.20.1"]
 api = ["fastapi==0.161.1", "uvicorn==0.54.0", "httpx==0.28.1", "sqlalchemy==2.1.6", "alembic==1.20.1", "langgraph==1.2.20"]   # httpx: FastAPI TestClient
 postgres = ["psycopg[binary]==3.3.6"]
+langchain = ["langchain==1.4.7", "langchain-core==1.7.0", "mcp==1.30.0", "langgraph==1.2.20"]   # bring your own chat model (see langchain_tools.py)
 mcp = ["mcp==1.30.0", "langgraph==1.2.20"]   # the server runs the graph engine
 
 [project.scripts]

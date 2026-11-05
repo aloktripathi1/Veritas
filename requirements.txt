@@ -10,3 +10,5 @@ fastapi==0.161.1
 uvicorn==0.54.0
 httpx==0.28.1
 psycopg[binary]==3.3.6
+langchain==1.4.7
+langchain-core==1.7.0
