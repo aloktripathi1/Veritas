@@ -28,6 +28,33 @@ PYTHONPATH=src python -m veritas SRVCABLE research_pack --out output.md --artifa
 ```
 Exit code 0 = validation passed, 1 = validation failed (brief saved as `output.md.FAILED`; see `run.json`), 2 = input/LLM/extraction error (e.g. fewer than 8 verified evidence items). Takes about 100 s (3-6 LLM calls; token usage is recorded in `run.json`). Add `--no-entailment` to skip the advisory judge.
 
+## HTTP API
+FastAPI service with SQL persistence (`src/veritas/api.py`, `db.py`). A brief is a background job: `POST /briefs` returns `202` and a `run_id`; poll `GET /briefs/{run_id}`.
+
+| Endpoint | Purpose |
+|---|---|
+| `POST /briefs` | queue a run `{ticker, company, docs_dir, use_entailment, engine: graph\|classic}` |
+| `GET /briefs/{id}` | status (`queued/running/done/failed`), brief, validation errors and warnings, counts |
+| `GET /briefs/{id}/evidence` | evidence registry, calculations, conflicts (`409` until the run is done) |
+| `POST /briefs/{id}/validate` | deterministic re-check of an edited brief against that run's registry (no LLM) |
+| `GET /briefs`, `GET /stats` | past runs; pass rate, repair histogram, top validation error codes (SQL aggregates) |
+| `GET /healthz` | liveness plus a database check |
+
+```bash
+pip install -e '.[api]'                      # add ,postgres for a Postgres URL
+veritas-api                                  # http://127.0.0.1:8000/docs  (OpenAPI)
+curl -s localhost:8000/briefs -H 'content-type: application/json' \
+  -d '{"ticker":"SRVCABLE","company":"Sarvottam Cables Ltd","docs_dir":"."}'
+```
+Config (env): `VERITAS_DATABASE_URL` (default `sqlite:///veritas.db`; e.g. `postgresql+psycopg://user:pw@host/db`), `VERITAS_DOCS_ROOT` (default `research_pack/`; `docs_dir` must stay inside it), `VERITAS_LOG_LEVEL`. Schema is managed by Alembic migrations that run on startup (`src/veritas/migrations/`). Logs are one JSON object per line and contain ids and counts, never documents, prompts or keys. There is no authentication: put it behind a gateway.
+
+### Docker
+```bash
+export ANTHROPIC_API_KEY=...        # read from your shell; never baked into the image
+docker compose up --build           # api on :8000, Postgres 16 with a healthcheck
+```
+The `Dockerfile` and `docker-compose.yml` were written but **not built or run** on the machine used for development (no Docker available there); the API itself was run with uvicorn against SQLite, and Postgres was not tested.
+
 ## LangGraph engine
 The robust pipeline also exists as a LangGraph state graph (`src/veritas/graph.py`): one node per stage, conditional edges for the evidence abort and the bounded judge/repair loop, and a checkpointer that records the state after every node. It reuses the same functions, prompts, validators and thresholds as the classic engine and returns the same `Result`; tests assert identical briefs, issues, prompts, LLM-call counts and repairs.
 ```bash
@@ -52,9 +79,31 @@ claude mcp add veritas --env VERITAS_DOCS_ROOT=$PWD/research_pack --env SRV_PROV
 ```
 Paths: `docs_dir` is relative to `VERITAS_DOCS_ROOT` (default: this repo's `research_pack/`) or absolute inside it; `..`, symlink escapes and missing directories are rejected as tool errors. The LLM comes from `make_llm()` (same `SRV_PROVIDER`/`SRV_MODEL`/`ANTHROPIC_API_KEY` settings, never logged or returned); `build_brief` takes about as long as a CLI run. Runs are held in memory (newest 20). `mcp` is pinned to 1.30.0 because 2.x renames `FastMCP` to `MCPServer`.
 
+## LangChain agent and MCP client
+`src/veritas/langchain_tools.py` exposes the four MCP tools as LangChain `StructuredTool`s (they call the same FastMCP server object, so path confinement, error mapping and run storage are shared) and `build_agent(server, chat_model)` wires them into a `langchain.agents.create_agent` tool-calling agent; tool errors come back to the model as messages. Any tool-calling LangChain chat model works. `langchain-anthropic` is not a dependency because its current releases need a newer `anthropic` SDK than the `anthropic==0.111.0` this repo pins; install it in a separate environment if you want Claude as the agent's model. The tests drive the agent with a scripted chat model.
+```bash
+pip install -e '.[langchain]'
+```
+`python -m veritas.mcp_client` is a plain MCP client: it starts `veritas.mcp_server` as a stdio subprocess, lists the tools, screens a folder and, with `--build`, builds a brief and re-validates it. The child process gets a minimal environment; pass settings explicitly with `--pass-env NAME`.
+```bash
+python -m veritas.mcp_client SRVCABLE .          # needs VERITAS_DOCS_ROOT=research_pack (the default)
+python -m veritas.mcp_client SRVCABLE . --build --pass-env SRV_PROVIDER --pass-env ANTHROPIC_API_KEY
+```
+
+## Evaluation tool
+`veritas-eval` measures reliability instead of asserting it. Both subcommands print a markdown report (`--out FILE` to save, `--json` for data).
+```bash
+veritas-eval repeat --scenario flaky -n 20 --seed 0    # simulated stand-in model: tests the harness and the failure handling
+veritas-eval repeat --live -n 10                        # the real model on the real corpus (needs a provider; costs calls)
+veritas-eval judge --run runs/round2/r5_a --judge live  # LLM judge vs. labelled wrong-citation rewrites of a stored brief
+```
+- **repeat**: pass rate with a 95% Wilson interval, mean and std of repairs, LLM calls, seconds, words and evidence, run-to-run consistency of the cited evidence (mean pairwise Jaccard), and failing runs grouped by validator error code. Errored runs count as failures. Simulated scenarios (`clean`, `flaky`, `stubborn`) are labelled *simulated* in the report: they exercise the repair loop and the statistics, they are not a measurement of any model.
+- **judge**: each cited sentence of a stored brief is kept as is and also rewritten to cite an unrelated evidence item (wrong by construction). The report gives the judge's false-positive and detection rates, the deterministic validator's detection rate on the same rewrites, their agreement (Cohen's kappa), and lists the cases each one missed. `--judge number|lazy` are rule-based stand-ins used to test the harness (a "lazy" judge that approves everything must score zero detection).
+
 ## Test
 ```bash
 python -m pytest -q              # offline suite, no network/key (scripted model); see docs/evaluation.md for counts
+                                 # tests of an optional extra (graph, mcp, api, langchain) skip themselves if it is not installed
 python -m pytest -m live -q      # live-model integration, needs a provider
 PYTHONPATH=src python scripts/adversarial_live.py [naive]   # live paraphrased-injection runs -> runs/round2/adv_*
 python scripts/evaluate.py runs/round2/r5_a runs/round2/r5_b runs/round2/r5_c    # gold-set table

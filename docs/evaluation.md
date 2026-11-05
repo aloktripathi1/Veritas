@@ -105,3 +105,27 @@ Added on branch `feat/langgraph-mcp`. Counts below are from `python -m pytest -q
 - **MCP:** every tool is called through the SDK's in-process client session. Covered: the look-alike company is excluded and the injected document flagged, `build_brief` -> `get_evidence` -> `validate_brief` round trip, a fabricated citation fails `validate_brief`, `..`/absolute/symlink paths outside the root are rejected, missing paths and files, unknown `run_id`, `LLMError`/`PipelineError`/`LoadError` mapped to tool errors, run eviction. A one-off check over a real stdio subprocess listed the four tools and screened the corpus (not part of the suite).
 - **Overhead:** one scripted robust run took about 4.6 ms classic and 19.4 ms graph (mean of 20 runs, one machine).
 - **Live:** not run for the graph engine or the MCP server. No `ANTHROPIC_API_KEY` was set in the environment where this was built, so no live result is claimed; `tests/test_live.py` still exercises only the classic engine.
+
+## Service layer, retries and evaluation tool (offline)
+Added on branch `feat/service-eval`. Counts are from `python -m pytest -q --cov=veritas` in a virtualenv with the `graph`, `mcp`, `api` and `langchain` extras installed (not `postgres`: no psycopg, no server).
+- **136 tests pass offline** (about 8 s): the 90 from the previous section plus `test_retry` 7, `test_db` 5, `test_api` 13, `test_logging` 2, `test_langchain_agent` 4, `test_mcp_client` 2 and `test_evalkit` 13. The suite also passes with `-W error::ResourceWarning` (an earlier draft leaked SQLite connections; `Store.close()` and the API lifespan fix that). Without the extras installed: 76 passed, 9 skipped.
+- **Coverage 92%** overall (`api.py` 96%, `db.py` 99%, `evalkit.py` 96%, `graph.py` 100%, `langchain_tools.py` 100%; `llm.py` 59% because provider code is live-only; the Alembic migration files show 0% in the report although the tests run them through `command.upgrade` and compare the resulting schema with the ORM models; I did not investigate why coverage does not record them). Ruff: clean.
+- **Not exercised here:** Docker image and `docker compose` (no Docker on the development machine); Postgres (no server; the code uses portable SQLAlchemy constructs only); any live LLM call from the API, the LangChain agent or `veritas-eval --live`. The API was started with `veritas-api` under uvicorn against SQLite and answered `/healthz`, rejected a traversal path with `422`, served `/openapi.json`, and logged JSON lines.
+- **Retry:** a flaky scripted model that fails `k` times then answers is retried with delays `base, 2*base, ...`, gives up after the budget with a message naming the attempt count, never retries a permanent `LLMError`, and `run` / `run_graph` count only logical calls.
+
+### `veritas-eval` runs (simulated model: harness check, not model quality)
+`veritas-eval repeat --scenario S -n 20 --seed 0`, classic and graph engines produce identical numbers (asserted in the tests):
+
+| scenario | p(bad draft) | passed | pass rate (95% Wilson) | repairs mean (std) | failing validator code |
+|---|---|---|---|---|---|
+| clean | 0.0 | 20/20 | 1.0 (0.839 to 1.0) | 0.0 (0.0) | none |
+| flaky | 0.5 | 17/20 | 0.85 (0.64 to 0.948) | 0.8 (0.77) | `injection_phrase` in 3 runs |
+| stubborn | 1.0 | 0/20 | 0.0 (0.0 to 0.161) | 2.0 (0.0) | `injection_phrase` in 20 runs |
+
+With p = 0.5 a run fails only if the first draft and both repairs are bad, an expected 12.5% failure rate; 3/20 observed. This shows the repair loop and the statistics behave as designed. It does not measure any real model.
+
+### Judge agreement on the stored run `runs/round2/r5_a` (deterministic)
+`veritas-eval judge --run runs/round2/r5_a`: 24 cited sentences, each rewritten to cite an unrelated evidence item (wrong by construction).
+- The **deterministic validator** flagged 17 of 24 rewrites (0.708, 95% Wilson interval 0.508 to 0.851), and 0 errors on the original brief. The 7 it missed are sentences with no number to bind (descriptions, forecasts, qualitative statements); these are the cases an entailment judge is for.
+- A **rule-based "lazy" judge** (approves everything) detected 0/24 and scored accuracy 0.5, kappa 0.0: the harness exposes a useless judge. A **rule-based "number" judge** detected the same 17/24 as the validator (kappa 0.869) and wrongly flagged 3 of the 24 original sentences (false-positive rate 0.125).
+- **LLM judge: not run.** `veritas-eval judge --judge live` has not been run, so there is no measured agreement for the real judge, and the earlier judge result in this file (23 supported / 5 partial / 0 unsupported on `r5_a`) is the only live judge data.

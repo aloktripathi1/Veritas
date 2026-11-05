@@ -1,0 +1,32 @@
+# API + Postgres. Secrets come from your shell or a git-ignored .env next to this file; nothing is baked into the image.
+#   export ANTHROPIC_API_KEY=...   (SRV_PROVIDER=anthropic is set in the image)
+#   docker compose up --build
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: veritas
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-veritas-dev}
+      POSTGRES_DB: veritas
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U veritas -d veritas"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  api:
+    build: .
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      VERITAS_DATABASE_URL: postgresql+psycopg://veritas:${POSTGRES_PASSWORD:-veritas-dev}@db:5432/veritas
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      SRV_MODEL: ${SRV_MODEL:-sonnet}
+    ports:
+      - "8000:8000"
+
+volumes:
+  pgdata:
