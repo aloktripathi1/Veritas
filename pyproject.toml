@@ -10,6 +10,7 @@ dependencies = ["pydantic==2.13.4", "anthropic==0.111.0"]
 
 [project.optional-dependencies]
 graph = ["langgraph==1.2.20"]
+db = ["sqlalchemy==2.1.6", "alembic==1.20.1"]
 mcp = ["mcp==1.30.0", "langgraph==1.2.20"]   # the server runs the graph engine
 
 [project.scripts]
