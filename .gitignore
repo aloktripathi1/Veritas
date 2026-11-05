@@ -9,3 +9,4 @@ candidate.zip
 nohup.out
 .ruff_cache/
 runs/demo/
+*.db

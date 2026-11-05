@@ -19,6 +19,7 @@ from mcp.server.fastmcp.exceptions import ToolError
 from .identity import exclusion_markers
 from .llm import LLM, LLMError, make_llm
 from .loader import LoadError, load_documents
+from .paths import PathError, resolve_docs_dir
 from .pipeline import PipelineError, screen
 from .validate import validate_brief as check_brief
 
@@ -56,16 +57,10 @@ def create_server(llm: LLM | Callable[[], LLM] | None = None, docs_root: str | P
     mcp = FastMCP("veritas", instructions="Evidence-cited stock research briefs. screen_documents -> build_brief -> get_evidence / validate_brief.")
 
     def docs_path(docs_dir: str) -> str:
-        _need(docs_dir, "docs_dir")
         try:
-            p = (root / docs_dir).resolve()          # an absolute docs_dir replaces root here; the containment check below decides
-        except (OSError, ValueError, RuntimeError) as e:
-            raise ToolError(f"Invalid docs_dir: {e}") from e
-        if not p.is_relative_to(root):
-            raise ToolError(f"docs_dir must be inside the allowed root ({root}); set VERITAS_DOCS_ROOT to change it")
-        if not p.is_dir():
-            raise ToolError(f"docs_dir does not exist or is not a directory: {p}")
-        return str(p)
+            return str(resolve_docs_dir(root, docs_dir))
+        except PathError as e:
+            raise ToolError(str(e)) from e
 
     def get_run(run_id: str) -> dict[str, Any]:
         if run_id not in runs:

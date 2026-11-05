@@ -28,6 +28,33 @@ PYTHONPATH=src python -m veritas SRVCABLE research_pack --out output.md --artifa
 ```
 Exit code 0 = validation passed, 1 = validation failed (brief saved as `output.md.FAILED`; see `run.json`), 2 = input/LLM/extraction error (e.g. fewer than 8 verified evidence items). Takes about 100 s (3-6 LLM calls; token usage is recorded in `run.json`). Add `--no-entailment` to skip the advisory judge.
 
+## HTTP API
+FastAPI service with SQL persistence (`src/veritas/api.py`, `db.py`). A brief is a background job: `POST /briefs` returns `202` and a `run_id`; poll `GET /briefs/{run_id}`.
+
+| Endpoint | Purpose |
+|---|---|
+| `POST /briefs` | queue a run `{ticker, company, docs_dir, use_entailment, engine: graph\|classic}` |
+| `GET /briefs/{id}` | status (`queued/running/done/failed`), brief, validation errors and warnings, counts |
+| `GET /briefs/{id}/evidence` | evidence registry, calculations, conflicts (`409` until the run is done) |
+| `POST /briefs/{id}/validate` | deterministic re-check of an edited brief against that run's registry (no LLM) |
+| `GET /briefs`, `GET /stats` | past runs; pass rate, repair histogram, top validation error codes (SQL aggregates) |
+| `GET /healthz` | liveness plus a database check |
+
+```bash
+pip install -e '.[api]'                      # add ,postgres for a Postgres URL
+veritas-api                                  # http://127.0.0.1:8000/docs  (OpenAPI)
+curl -s localhost:8000/briefs -H 'content-type: application/json' \
+  -d '{"ticker":"SRVCABLE","company":"Sarvottam Cables Ltd","docs_dir":"."}'
+```
+Config (env): `VERITAS_DATABASE_URL` (default `sqlite:///veritas.db`; e.g. `postgresql+psycopg://user:pw@host/db`), `VERITAS_DOCS_ROOT` (default `research_pack/`; `docs_dir` must stay inside it), `VERITAS_LOG_LEVEL`. Schema is managed by Alembic migrations that run on startup (`src/veritas/migrations/`). Logs are one JSON object per line and contain ids and counts, never documents, prompts or keys. There is no authentication: put it behind a gateway.
+
+### Docker
+```bash
+export ANTHROPIC_API_KEY=...        # read from your shell; never baked into the image
+docker compose up --build           # api on :8000, Postgres 16 with a healthcheck
+```
+The `Dockerfile` and `docker-compose.yml` were written but **not built or run** on the machine used for development (no Docker available there); the API itself was run with uvicorn against SQLite, and Postgres was not tested.
+
 ## LangGraph engine
 The robust pipeline also exists as a LangGraph state graph (`src/veritas/graph.py`): one node per stage, conditional edges for the evidence abort and the bounded judge/repair loop, and a checkpointer that records the state after every node. It reuses the same functions, prompts, validators and thresholds as the classic engine and returns the same `Result`; tests assert identical briefs, issues, prompts, LLM-call counts and repairs.
 ```bash

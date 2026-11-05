@@ -18,6 +18,7 @@ from .validate import ValidationResult, validate_brief
 
 PROMPTS = Path(__file__).resolve().parents[2] / "prompts"
 MODES = ("baseline", "structured", "robust")
+DEFAULT_TODAY = "2026-09-23"
 MIN_EVIDENCE = 8
 MAX_REPAIRS = 2   # bounded: never an open-ended self-reflection loop
 
@@ -148,6 +149,16 @@ def record_entailment(res: Result, verdicts: list, index: dict[int, str]) -> Non
                                                message=f"advisory judge: {index[v.id][:100]!r}: {v.reason}"))
         elif v.verdict == "partial" and v.id in index:
             res.validation.issues.append(Issue(severity="warning", code="entailment_partial", message=f"{index[v.id][:100]!r}: {v.reason}"))
+
+
+def validate_against_registry(brief: str, ticker: str, legal_name: str, directory: str, evidence: list[Evidence], calcs: list[Calc],
+                              conflicts: list[Conflict]) -> ValidationResult:
+    """Deterministic re-check of a brief against a stored registry (no LLM): reload and screen the documents exactly as robust mode does."""
+    docs, _ = load_documents(directory)
+    lines_by_doc = screen(docs, ticker, legal_name)
+    excluded = {d.doc_id for d in docs if not d.relevant}
+    markers = exclusion_markers([d for d in docs if not d.relevant], [d for d in docs if d.relevant]) if excluded else []
+    return validate_brief(brief, evidence, calcs, {d.doc_id: d for d in docs}, conflicts, lines_by_doc, excluded, markers)
 
 
 def run(mode: str, ticker: str, legal_name: str, directory: str, llm: LLM, today: str = "2026-09-23",
