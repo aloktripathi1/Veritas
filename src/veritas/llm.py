@@ -1,11 +1,14 @@
 """Provider-specific code lives here only. The pipeline sees `LLM.complete(system, user) -> str`."""
 from __future__ import annotations
 
+import logging
 import os
 import subprocess
 import tempfile
 import time
-from typing import Protocol
+from typing import Callable, Protocol
+
+log = logging.getLogger("veritas.llm")
 
 
 class LLM(Protocol):
@@ -16,6 +19,10 @@ class LLM(Protocol):
 
 class LLMError(Exception):
     pass
+
+
+class TransientLLMError(LLMError):
+    """A failure worth retrying (timeout, empty or failed CLI call). Still an LLMError for callers that catch the base class."""
 
 
 class AnthropicLLM:
@@ -61,11 +68,40 @@ class ClaudeCLILLM:
                      "--no-session-persistence", "--disable-slash-commands", "--setting-sources", ""],
                     input=user, capture_output=True, text=True, timeout=self.timeout, cwd=cwd,
                 )
-            except (subprocess.TimeoutExpired, FileNotFoundError) as e:
+            except subprocess.TimeoutExpired as e:
+                raise TransientLLMError(f"claude CLI failed: {e}") from e
+            except FileNotFoundError as e:
                 raise LLMError(f"claude CLI failed: {e}") from e
         if r.returncode != 0 or not r.stdout.strip():
-            raise LLMError(f"claude CLI exit {r.returncode}: {r.stderr.strip()[:300]}")
+            raise TransientLLMError(f"claude CLI exit {r.returncode}: {r.stderr.strip()[:300]}")
         return r.stdout
+
+
+class RetryingLLM:
+    """Retries TransientLLMError with exponential backoff (base, 2*base, ...). Other errors propagate at once.
+
+    Wraps any LLM; `usage` and other attributes are delegated to it. The Anthropic client already retries HTTP
+    failures inside the SDK, so make_llm only wraps the CLI provider.
+    """
+
+    def __init__(self, inner: LLM, retries: int = 2, base_delay: float = 2.0, sleep: Callable[[float], None] = time.sleep):
+        self.inner, self.retries, self.base_delay, self._sleep = inner, retries, base_delay, sleep
+        self.name = f"retry:{inner.name}"
+
+    def __getattr__(self, item):
+        return getattr(self.inner, item)
+
+    def complete(self, system: str, user: str) -> str:
+        for attempt in range(self.retries + 1):
+            try:
+                return self.inner.complete(system, user)
+            except TransientLLMError as e:
+                if attempt == self.retries:
+                    raise LLMError(f"giving up after {attempt + 1} attempts: {e}") from e
+                delay = self.base_delay * 2 ** attempt
+                log.warning("transient LLM failure, retrying", extra={"attempt": attempt + 1, "delay_s": delay, "error": str(e)[:200]})
+                self._sleep(delay)
+        raise AssertionError("unreachable")
 
 
 class ScriptedLLM:
@@ -101,7 +137,7 @@ def make_llm() -> LLM:
     if provider == "anthropic":
         return AnthropicLLM(model)
     if provider == "claude-cli":
-        return ClaudeCLILLM(model)
+        return RetryingLLM(ClaudeCLILLM(model), retries=int(os.environ.get("SRV_RETRIES", "2")))
     raise LLMError(f"Unknown SRV_PROVIDER {provider!r}")
 
 
