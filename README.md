@@ -128,7 +128,6 @@ All numbers come from [docs/evaluation.md](docs/evaluation.md), which also lists
 - **Adversarial:** two paraphrased injections written to evade the scanner were run live against the real and a naive system prompt (4 runs): all content checks passed (24/24) and validation passed 4/4. The model resisted both on its own; the scripted tests exercise the code defences with a model that does obey.
 - **Offline:** 136 tests pass (76 pass and 9 skip without the optional extras); coverage 92%; ruff clean.
 - **Deterministic validator vs wrong citations:** on the stored brief `r5_a`, it flagged 17 of 24 sentences rewritten to cite an unrelated item; the 7 it missed have no number to bind. The LLM judge's side of this comparison has not been run.
-- **Not run:** Docker build, Postgres, and any live call through the API, the LangChain agent or `veritas-eval --live`.
 
 ## Project layout
 ```
