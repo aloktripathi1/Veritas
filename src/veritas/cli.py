@@ -16,6 +16,7 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("ticker")
     ap.add_argument("docs_dir")
     ap.add_argument("--mode", choices=MODES, default="robust")
+    ap.add_argument("--engine", choices=("classic", "graph"), default="classic", help="classic: hand-written pipeline; graph: LangGraph (robust mode only, needs the [graph] extra)")
     ap.add_argument("--company", default="Sarvottam Cables Ltd", help="exact legal name used for identity checks")
     ap.add_argument("--today", default="2026-09-23")
     ap.add_argument("--system-prompt", help="override prompts/system.md (used for ablations only)")
@@ -24,9 +25,20 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--out", default="output.md")
     ap.add_argument("--artifacts", help="directory for evidence.json / run.json")
     a = ap.parse_args(argv)
+    if a.engine == "graph" and a.mode != "robust":
+        print(f"ERROR: --engine graph only supports --mode robust (got {a.mode})", file=sys.stderr)
+        return 2
+    progress = None if a.quiet else (lambda m: print(m, flush=True))
     try:
-        res = run(a.mode, a.ticker, a.company, a.docs_dir, make_llm(), a.today, a.system_prompt, not a.no_entailment,
-                  None if a.quiet else (lambda m: print(m, flush=True)))
+        if a.engine == "graph":
+            try:
+                from .graph import run_graph
+            except ImportError:
+                print("ERROR: --engine graph needs the optional dependency: pip install '.[graph]'", file=sys.stderr)
+                return 2
+            res = run_graph(a.ticker, a.company, a.docs_dir, make_llm(), a.today, a.system_prompt, not a.no_entailment, progress)
+        else:
+            res = run(a.mode, a.ticker, a.company, a.docs_dir, make_llm(), a.today, a.system_prompt, not a.no_entailment, progress)
     except (LoadError, LLMError, PipelineError) as e:
         print(f"ERROR: {e}", file=sys.stderr)
         return 2

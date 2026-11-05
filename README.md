@@ -24,9 +24,33 @@ Providers: `anthropic` (needs `ANTHROPIC_API_KEY`) or `claude-cli` (uses a logge
 ## Run
 ```bash
 PYTHONPATH=src python -m veritas SRVCABLE research_pack --out output.md --artifacts runs/latest
-# modes: --mode baseline | structured | robust (default)
+# modes: --mode baseline | structured | robust (default); engines: --engine classic (default) | graph
 ```
 Exit code 0 = validation passed, 1 = validation failed (brief saved as `output.md.FAILED`; see `run.json`), 2 = input/LLM/extraction error (e.g. fewer than 8 verified evidence items). Takes about 100 s (3-6 LLM calls; token usage is recorded in `run.json`). Add `--no-entailment` to skip the advisory judge.
+
+## LangGraph engine
+The robust pipeline also exists as a LangGraph state graph (`src/veritas/graph.py`): one node per stage, conditional edges for the evidence abort and the bounded judge/repair loop, and a checkpointer that records the state after every node. It reuses the same functions, prompts, validators and thresholds as the classic engine and returns the same `Result`; tests assert identical briefs, issues, prompts, LLM-call counts and repairs.
+```bash
+pip install -e '.[graph]'     # langgraph==1.2.20
+PYTHONPATH=src python -m veritas SRVCABLE research_pack --engine graph --out output.md
+```
+`--engine classic` is the default; the graph engine supports `--mode robust` only. From Python:
+```python
+from langgraph.checkpoint.memory import InMemorySaver
+from veritas.graph import run_graph
+saver = InMemorySaver()
+res = run_graph("SRVCABLE", "Sarvottam Cables Ltd", "research_pack", make_llm(), thread_id="demo", checkpointer=saver)   # inspect with node_trace()
+```
+The diagram of nodes and edges is in `docs/architecture.md`; the reasoning and trade-offs are in `docs/decisions/009-langgraph-engine.md`.
+
+## MCP server
+`veritas-mcp` serves four tools over stdio: `screen_documents` (identity gate and injection scan, no LLM), `build_brief` (graph engine; returns a `run_id`), `get_evidence` (registry, calculations, conflicts of a run) and `validate_brief` (deterministic re-check of an edited brief against a run, no LLM).
+```bash
+pip install -e '.[mcp]'       # mcp==1.30.0 (+ langgraph, which build_brief runs)
+veritas-mcp                    # or: python -m veritas.mcp_server
+claude mcp add veritas --env VERITAS_DOCS_ROOT=$PWD/research_pack --env SRV_PROVIDER=claude-cli -- $PWD/.venv/bin/veritas-mcp
+```
+Paths: `docs_dir` is relative to `VERITAS_DOCS_ROOT` (default: this repo's `research_pack/`) or absolute inside it; `..`, symlink escapes and missing directories are rejected as tool errors. The LLM comes from `make_llm()` (same `SRV_PROVIDER`/`SRV_MODEL`/`ANTHROPIC_API_KEY` settings, never logged or returned); `build_brief` takes about as long as a CLI run. Runs are held in memory (newest 20). `mcp` is pinned to 1.30.0 because 2.x renames `FastMCP` to `MCPServer`.
 
 ## Test
 ```bash
